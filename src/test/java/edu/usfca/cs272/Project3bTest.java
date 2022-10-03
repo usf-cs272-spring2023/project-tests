@@ -16,6 +16,7 @@ import java.time.Instant;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
@@ -85,6 +86,14 @@ public class Project3bTest extends ProjectTests {
 			var test = new Project3aTest().new C_PartialSearchTests();
 			test.setup();
 			test.testTextDirectory(BENCH_THREADS);
+		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
 		}
 	}
 
@@ -294,10 +303,7 @@ public class Project3bTest extends ProjectTests {
 		Configurator.setAllLevels(LogManager.getRootLogger().getName(), Level.OFF);
 
 		// free up memory before benchmarking
-		Runtime.getRuntime().gc();
-
-		System.out.printf("%nRunning with %d processors and %.1f MB memory free.%n",
-				Runtime.getRuntime().availableProcessors(), (double) Runtime.getRuntime().freeMemory() / 1048576);
+		ProjectTests.freeMemory();
 
 		// begin benchmarking
 		long[] runs1 = benchmark(args1, warmRuns, timeRuns);

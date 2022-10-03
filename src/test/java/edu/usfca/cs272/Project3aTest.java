@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
@@ -174,6 +175,14 @@ public class Project3aTest extends ProjectTests {
 			Executable debug = () -> checkOutput(args, actual, expected);
 			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, debug);
 		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
+		}
 	}
 
 	/**
@@ -313,6 +322,14 @@ public class Project3aTest extends ProjectTests {
 			Path input = TEXT_PATH;
 			String query = "complex.txt";
 			testSearch(subdir, input, query, exact, threads);
+		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
 		}
 	}
 
@@ -519,8 +536,11 @@ public class Project3aTest extends ProjectTests {
 			workers.removeIf(name -> name.startsWith("junit")); // remove junit timeout threads
 			workers.removeIf(name -> name.startsWith("ForkJoinPool")); // remove other junit threads
 
-			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\n";
-			Assertions.assertTrue(workers.size() > 0, debug.formatted(before, finish, workers));
+			String message = """
+					Unable to detect any worker threads. Are you 100% positive threads are being created and used in your code? You can debug this by producing log output inside the run method of your thread objects. This is an imperfect test; if you are able to verify threads are being created and used, make a private post on Piazza. The instructor will look into the problem.
+					""";
+			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\n\n%s\n";
+			Assertions.assertTrue(workers.size() > 0, debug.formatted(before, finish, workers, message));
 		});
 	}
 

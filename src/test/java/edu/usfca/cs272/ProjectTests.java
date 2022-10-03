@@ -499,6 +499,35 @@ public class ProjectTests {
 	}
 
 	/**
+	 * Encourages the garbage collector to run; useful in between intensive groups
+	 * of tests or before benchmarking.
+	 */
+	public static void freeMemory() {
+		Runtime runtime = Runtime.getRuntime();
+		long bytes = 1048576;
+		double before = (double) (runtime.totalMemory() - runtime.freeMemory()) / bytes;
+
+		// try to free up memory before another run of intensive tests
+		runtime.gc();
+
+		// collect rest of system information
+		int processors = runtime.availableProcessors();
+		double maximum = (double) runtime.maxMemory() / bytes;
+		double after = (double) (runtime.totalMemory() - runtime.freeMemory()) / bytes;
+
+		String format = """
+
+				%8.2f Processors
+				%8.2f MB Memory Maximum
+				%8.2f MB Memory Used (Before GC)
+				%8.2f MB Memory Used (After GC)
+
+				""";
+
+		System.out.printf(format, (double) processors, maximum, before, after);
+	}
+
+	/**
 	 * Runs the SearchEngine Driver class by default.
 	 *
 	 * @param args the arguments to pass to Driver
