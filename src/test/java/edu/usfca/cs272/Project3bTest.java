@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
@@ -171,6 +172,14 @@ public class Project3bTest extends ProjectTests {
 								BENCH_THREADS, result, "no workers"));
 			});
 		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterEach
+		public void freeMemory() {
+			ProjectTests.freeMemory();
+		}
 	}
 
 	/**
@@ -253,6 +262,14 @@ public class Project3bTest extends ProjectTests {
 								BENCH_THREADS, result, "1 worker"));
 			});
 		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterEach
+		public void freeMemory() {
+			ProjectTests.freeMemory();
+		}
 	}
 
 	/** The number of warmup runs when benchmarking. */
@@ -303,7 +320,7 @@ public class Project3bTest extends ProjectTests {
 		Configurator.setAllLevels(LogManager.getRootLogger().getName(), Level.OFF);
 
 		// free up memory before benchmarking
-		ProjectTests.freeMemory();
+		// ProjectTests.freeMemory();
 
 		// begin benchmarking
 		long[] runs1 = benchmark(args1, warmRuns, timeRuns);
