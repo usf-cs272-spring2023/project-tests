@@ -1,0 +1,599 @@
+{
+  "a": [
+    {
+      "count": 2,
+      "score": 0.03636364,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/"
+    },
+    {
+      "count": 995,
+      "score": 0.03451146,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 286,
+      "score": 0.02918070,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 108,
+      "score": 0.02505219,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 222,
+      "score": 0.02365477,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 615,
+      "score": 0.02269708,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 66,
+      "score": 0.02037037,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    }
+  ],
+  "b": [
+    {
+      "count": 4,
+      "score": 0.00092786,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 14,
+      "score": 0.00051668,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00031966,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 7,
+      "score": 0.00024279,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    }
+  ],
+  "c": [
+    {
+      "count": 11,
+      "score": 0.00255161,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 11,
+      "score": 0.00040596,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00031966,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00030864,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    },
+    {
+      "count": 8,
+      "score": 0.00027748,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00020406,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "d": [
+    {
+      "count": 11,
+      "score": 0.00112233,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00069589,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00031966,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 7,
+      "score": 0.00024279,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 6,
+      "score": 0.00022143,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "e": [
+    {
+      "count": 14,
+      "score": 0.00324751,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 4,
+      "score": 0.00014762,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 4,
+      "score": 0.00013874,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010655,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "f": [
+    {
+      "count": 10,
+      "score": 0.00231965,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 4,
+      "score": 0.00014762,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010655,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00010405,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "g": [
+    {
+      "count": 23,
+      "score": 0.00234670,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00006937,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00003691,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "h": [
+    {
+      "count": 6,
+      "score": 0.00022143,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00021311,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 6,
+      "score": 0.00020811,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "i": [
+    {
+      "count": 1,
+      "score": 0.00030864,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    },
+    {
+      "count": 5,
+      "score": 0.00018453,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00010405,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "j": [
+    {
+      "count": 10,
+      "score": 0.00106553,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 20,
+      "score": 0.00069370,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 6,
+      "score": 0.00061218,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00046393,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00007381,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "k": [
+    {
+      "count": 1,
+      "score": 0.00010655,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00007381,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00003468,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    }
+  ],
+  "l": [
+    {
+      "count": 1,
+      "score": 0.00030864,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00021311,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 5,
+      "score": 0.00017342,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00003691,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "m": [
+    {
+      "count": 22,
+      "score": 0.00081193,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00046393,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 8,
+      "score": 0.00027748,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00021311,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00020406,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "n": [
+    {
+      "count": 6,
+      "score": 0.00139179,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 10,
+      "score": 0.00106553,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 11,
+      "score": 0.00038153,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00020406,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00011072,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "o": [
+    {
+      "count": 54,
+      "score": 0.00550964,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 20,
+      "score": 0.00463929,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 98,
+      "score": 0.00361677,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 30,
+      "score": 0.00319659,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 47,
+      "score": 0.00163019,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00030864,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    }
+  ],
+  "p": [
+    {
+      "count": 2,
+      "score": 0.00046393,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00031966,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 7,
+      "score": 0.00024279,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00011072,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "q": [
+    {
+      "count": 18,
+      "score": 0.00062433,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00020406,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "r": [
+    {
+      "count": 7,
+      "score": 0.00071421,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 13,
+      "score": 0.00045090,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00021311,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00011072,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "s": [
+    {
+      "count": 8,
+      "score": 0.00085242,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 5,
+      "score": 0.00051015,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00023196,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 4,
+      "score": 0.00013874,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00011072,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "t": [
+    {
+      "count": 5,
+      "score": 0.00053277,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 9,
+      "score": 0.00031216,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00023196,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 3,
+      "score": 0.00011072,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ],
+  "u": [
+    {
+      "count": 8,
+      "score": 0.00185572,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00030864,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    },
+    {
+      "count": 5,
+      "score": 0.00018453,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00003468,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    }
+  ],
+  "v": [
+    {
+      "count": 1,
+      "score": 0.00003468,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    }
+  ],
+  "w": [
+    {
+      "count": 3,
+      "score": 0.00011072,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00003468,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    }
+  ],
+  "x": [
+    {
+      "count": 7,
+      "score": 0.00162375,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc3629.html"
+    },
+    {
+      "count": 11,
+      "score": 0.00117208,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6838.html"
+    },
+    {
+      "count": 33,
+      "score": 0.00114460,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    },
+    {
+      "count": 19,
+      "score": 0.00070121,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00030864,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc475.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00020406,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    }
+  ],
+  "y": [
+    {
+      "count": 1,
+      "score": 0.00010203,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc6805.html"
+    },
+    {
+      "count": 2,
+      "score": 0.00007381,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    },
+    {
+      "count": 1,
+      "score": 0.00003468,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc7231.html"
+    }
+  ],
+  "z": [
+    {
+      "count": 4,
+      "score": 0.00014762,
+      "where": "https://usf-cs272-fall2022.github.io/project-web/input/rfcs/rfc5646.html"
+    }
+  ]
+}
