@@ -121,17 +121,13 @@ public class Project3bTest extends ProjectTests {
 					TEXT_FLAG, TEXT_PATH.toString(), THREADS_FLAG, String.valueOf(BENCH_THREADS)
 			};
 
-			System.out.println();
-			System.out.printf("### Testing Build 1 vs %d Workers...%n", BENCH_THREADS);
-
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args1, SHORT_TIMEOUT);
 			testNoExceptions(args2, SHORT_TIMEOUT);
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("bench-index-multi.txt", "1 Worker", args1,
-						String.valueOf(BENCH_THREADS) + " Workers", args2);
+				double result = compare("Build", "1 Worker", args1, String.valueOf(BENCH_THREADS) + " Workers", args2);
 
 				assertTrue(result >= 1.1,
 						() -> String.format("%d workers has a %.2fx speedup (less than the 1.1x required) compareed to %s.",
@@ -154,17 +150,13 @@ public class Project3bTest extends ProjectTests {
 					TEXT_FLAG, TEXT_PATH.toString(), THREADS_FLAG, String.valueOf(BENCH_THREADS)
 			};
 
-			System.out.println();
-			System.out.printf("### Testing Build Single vs Multi...%n", BENCH_THREADS);
-
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args1, SHORT_TIMEOUT);
 			testNoExceptions(args2, SHORT_TIMEOUT);
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("bench-index-single.txt", "Single", args1,
-						String.valueOf(BENCH_THREADS) + " Workers", args2);
+				double result = compare("Build", "Single", args1, String.valueOf(BENCH_THREADS) + " Workers", args2);
 
 				assertTrue(result >= 1.1,
 						() -> String.format("%d workers has a %.2fx speedup (less than the 1.1x required) compareed to %s.",
@@ -203,7 +195,7 @@ public class Project3bTest extends ProjectTests {
 			};
 
 			System.out.println();
-			System.out.printf("### Testing Search 1 vs %d Workers...%n", BENCH_THREADS);
+			System.out.printf("## Testing Search 1 vs %d Workers...%n", BENCH_THREADS);
 
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args1, SHORT_TIMEOUT);
@@ -211,8 +203,7 @@ public class Project3bTest extends ProjectTests {
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("bench-search-multi.txt", "1 Worker", args1,
-						String.valueOf(BENCH_THREADS) + " Workers", args2);
+				double result = compare("Search", "1 Worker", args1, String.valueOf(BENCH_THREADS) + " Workers", args2);
 
 				assertTrue(result >= 1.1,
 						() -> String.format("%d workers has a %.2fx speedup (less than the 1.1x required) compareed to %s.",
@@ -236,17 +227,13 @@ public class Project3bTest extends ProjectTests {
 					THREADS_FLAG, String.valueOf(BENCH_THREADS)
 			};
 
-			System.out.println();
-			System.out.printf("### Testing Search Single vs Multi...%n", BENCH_THREADS);
-
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args1, SHORT_TIMEOUT);
 			testNoExceptions(args2, SHORT_TIMEOUT);
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("bench-search-single.txt", "Single", args1,
-						String.valueOf(BENCH_THREADS) + " Workers", args2);
+				double result = compare("Search", "Single", args1, String.valueOf(BENCH_THREADS) + " Workers", args2);
 
 				assertTrue(result >= 1.1,
 						() -> String.format("%d workers has a %.2fx speedup (less than the 1.1x required) compareed to %s.",
@@ -318,6 +305,8 @@ public class Project3bTest extends ProjectTests {
 		StringWriter writer = new StringWriter();
 		PrintWriter out = new PrintWriter(writer);
 
+		out.printf("%n## Testing %s - %s versus %s%n", file, label1, label2);
+
 		String labelFormat = "%-6s    %10s    %10s%n";
 		String valueFormat = "%-6d    %10.6f    %10.6f%n";
 
@@ -327,7 +316,8 @@ public class Project3bTest extends ProjectTests {
 			min1 = Math.min(min1, runs1[i]);
 			min2 = Math.min(min2, runs2[i]);
 
-			out.printf(valueFormat, i + 1, (double) runs1[i] / Duration.ofSeconds(1).toMillis(),
+			out.printf(valueFormat, i + 1,
+					(double) runs1[i] / Duration.ofSeconds(1).toMillis(),
 					(double) runs2[i] / Duration.ofSeconds(1).toMillis());
 		}
 
@@ -340,7 +330,8 @@ public class Project3bTest extends ProjectTests {
 			min1 = Math.min(min1, runs1[i]);
 			min2 = Math.min(min2, runs2[i]);
 
-			out.printf(valueFormat, i + 1, (double) runs1[i] / Duration.ofSeconds(1).toMillis(),
+			out.printf(valueFormat, i + 1,
+					(double) runs1[i] / Duration.ofSeconds(1).toMillis(),
 					(double) runs2[i] / Duration.ofSeconds(1).toMillis());
 		}
 
@@ -348,9 +339,9 @@ public class Project3bTest extends ProjectTests {
 		double average2 = (double) total2 / timeRuns;
 
 		out.println();
-		out.printf("%10s:  %10.6f seconds average%n", label1, average1 / Duration.ofSeconds(1).toMillis());
+		out.printf("%10s:  %10.6f seconds average%n",   label1, average1 / Duration.ofSeconds(1).toMillis());
 		out.printf("%10s:  %10.6f seconds average%n%n", label2, average2 / Duration.ofSeconds(1).toMillis());
-		out.printf("%10s:  %10.6f seconds minimum%n", label1, (double) min1 / Duration.ofSeconds(1).toMillis());
+		out.printf("%10s:  %10.6f seconds minimum%n",   label1, (double) min1 / Duration.ofSeconds(1).toMillis());
 		out.printf("%10s:  %10.6f seconds minimum%n%n", label2, (double) min2 / Duration.ofSeconds(1).toMillis());
 
 		double speedup = (double) min1 / min2;
@@ -361,7 +352,11 @@ public class Project3bTest extends ProjectTests {
 		// output to console and to file
 		String results = writer.toString();
 		System.out.print(results);
-		Files.writeString(ACTUAL_PATH.resolve(file), results);
+
+		String test = label1.equals("Single") ? "single" : "multi";
+		String format = "bench-%s-%s.txt";
+		String filename = String.format(format, file.toLowerCase(), test);
+		Files.writeString(ACTUAL_PATH.resolve(filename), results);
 
 		return speedup;
 	}
@@ -389,12 +384,15 @@ public class Project3bTest extends ProjectTests {
 		System.setOut(nullStream);
 		System.setErr(nullStream);
 
+		systemOut.print("Benchmarking");
+
 		try {
 			for (int i = 0; i < warmRuns; i++) {
 				start = Instant.now();
 				Driver.main(args);
 				elapsed = Duration.between(start, Instant.now());
 				runs[i] = elapsed.toMillis();
+				systemOut.print(".");
 			}
 
 			for (int i = 0; i < timeRuns; i++) {
@@ -402,17 +400,20 @@ public class Project3bTest extends ProjectTests {
 				Driver.main(args);
 				elapsed = Duration.between(start, Instant.now());
 				runs[i + warmRuns] = elapsed.toMillis();
+				systemOut.print(".");
 			}
 		}
 		catch (Exception e) {
 			StringWriter writer = new StringWriter();
 			e.printStackTrace(new PrintWriter(writer));
 
-			String debug = String.format("%nArguments:%n    [%s]%nException:%n    %s%n", String.join(" ", args),
-					writer.toString());
+			String format = "%nArguments:%n    [%s]%nException:%n    %s%n";
+			String debug = String.format(format, String.join(" ", args), writer.toString());
 			fail(debug);
 		}
 		finally {
+			systemOut.println("done.");
+
 			// restore console output
 			System.setOut(systemOut);
 			System.setErr(systemErr);
