@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -589,6 +590,15 @@ public class Project4Test extends ProjectTests {
 	@TestMethodOrder(OrderAnnotation.class)
 	public class I_RuntimeTests {
 		/**
+		 * Free up memory before running consistency and benchmark tests.
+		 */
+		@BeforeAll
+		public static void setup() {
+			// free up memory before re-running
+			ProjectTests.freeMemory();
+		}
+
+		/**
 		 * Tests that the inverted index output remains consistent when repeated.
 		 *
 		 * @throws MalformedURLException if unable to create seed URL
@@ -596,9 +606,6 @@ public class Project4Test extends ProjectTests {
 		@Order(1)
 		@RepeatedTest(3)
 		public void testIndexConsistency() throws MalformedURLException {
-			// free up memory before re-running
-			Runtime.getRuntime().gc();
-
 			// run test
 			var testClass = new E_JavaTests();
 			testClass.setup();
@@ -627,16 +634,12 @@ public class Project4Test extends ProjectTests {
 					HTML_FLAG, url.toString(), MAX_FLAG, Integer.toString(limit), THREADS_FLAG, String.valueOf(BENCH_THREADS)
 			};
 
-			System.out.println();
-			System.out.printf("### Testing Build 1 vs %d Workers...%n", BENCH_THREADS);
-
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args2, SHORT_TIMEOUT);
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = Project3bTest.compare("bench-crawl-multi.txt", "1 Worker", args1,
-						String.valueOf(BENCH_THREADS) + " Workers", args2);
+				double result = Project3bTest.compare("Crawl", "1 Worker", args1, String.valueOf(BENCH_THREADS) + " Workers", args2);
 
 				assertTrue(result >= 1.5,
 						() -> String.format("%d workers has a %.2fx speedup (less than the 1.5x required) compareed to %s.",
@@ -674,7 +677,7 @@ public class Project4Test extends ProjectTests {
 		String actualName = String.format("index-%s-%s.json", subdir, name);
 		Path actualPath = ACTUAL_PATH.resolve(actualName);
 
-		String expectedName = String.format("index-%s.json", name);
+		String expectedName = String.format("index-%s-%s.json", subdir, name);
 		Path expectedPath = EXPECTED_CRAWL.resolve(subdir).resolve(expectedName);
 
 		URL base = new URL(absolute);
@@ -743,7 +746,8 @@ public class Project4Test extends ProjectTests {
 
 		String[] args = {
 				HTML_FLAG, url.toString(), MAX_FLAG, Integer.toString(limit), THREADS_FLAG, Integer.toString(THREADS_DEFAULT),
-				QUERY_FLAG, QUERY_PATH.resolve(query).toString(), RESULTS_FLAG, actual.normalize().toString()
+				QUERY_FLAG, QUERY_PATH.resolve(query).toString(), RESULTS_FLAG, actual.normalize().toString(),
+				exact ? EXACT_FLAG : ""
 		};
 
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, () -> { ProjectTests.checkOutput(args, actual, expected); });
