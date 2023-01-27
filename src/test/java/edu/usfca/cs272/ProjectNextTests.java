@@ -17,7 +17,7 @@ import org.opentest4j.AssertionFailedError;
  * not be run directly; it is run by GitHub Actions only.
  *
  * @author CS 272 Software Development (University of San Francisco)
- * @version Fall 2022
+ * @version Spring 2023
  */
 public class ProjectNextTests extends ProjectTests {
 	/**

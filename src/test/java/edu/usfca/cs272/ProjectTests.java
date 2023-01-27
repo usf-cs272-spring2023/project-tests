@@ -30,7 +30,7 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
  * Utility methods used by other JUnit test classes.
  *
  * @author CS 272 Software Development (University of San Francisco)
- * @version Fall 2022
+ * @version Spring 2023
  */
 public class ProjectTests {
 	/**
