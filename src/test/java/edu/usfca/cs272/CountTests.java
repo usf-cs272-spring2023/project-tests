@@ -1,8 +1,8 @@
 package edu.usfca.cs272;
 
-import static edu.usfca.cs272.ProjectFlags.COUNTS;
-import static edu.usfca.cs272.ProjectFlags.TEXT;
-import static edu.usfca.cs272.ProjectPaths.HELLO;
+import static edu.usfca.cs272.ProjectFlag.COUNTS;
+import static edu.usfca.cs272.ProjectFlag.TEXT;
+import static edu.usfca.cs272.ProjectPath.HELLO;
 import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.checkOutput;
@@ -47,7 +47,7 @@ public class CountTests {
 		@Order(1)
 		@Test
 		public void testHelloFile() {
-			testCountOutput(ProjectPaths.HELLO);
+			testCountOutput(ProjectPath.HELLO);
 		}
 
 		/**
@@ -59,8 +59,8 @@ public class CountTests {
 		@Tag("test_v1.1")
 		@Tag("test_v1.x")
 		public void testSentencesFile() {
-			Path input = ProjectPaths.SIMPLE.resolve("sentences.md");
-			String id = ProjectPaths.id(input);
+			Path input = ProjectPath.SIMPLE.resolve("sentences.md");
+			String id = ProjectPath.id(input);
 			testCountOutput(input, id);
 		}
 
@@ -70,7 +70,7 @@ public class CountTests {
 		@Order(3)
 		@Test
 		public void testStemFile() {
-			testCountOutput(ProjectPaths.STEMS_IN);
+			testCountOutput(ProjectPath.STEMS_IN);
 		}
 
 		/**
@@ -79,7 +79,7 @@ public class CountTests {
 		@Order(4)
 		@Test
 		public void testRFCFile() {
-			testCountOutput(ProjectPaths.RFCS_HTTP);
+			testCountOutput(ProjectPath.RFCS_HTTP);
 		}
 
 		/**
@@ -88,7 +88,7 @@ public class CountTests {
 		@Order(4)
 		@Test
 		public void testGutenFile() {
-			testCountOutput(ProjectPaths.GUTEN_GREAT);
+			testCountOutput(ProjectPath.GUTEN_GREAT);
 		}
 
 		/**
@@ -100,7 +100,7 @@ public class CountTests {
 		@Tag("test_v1.1")
 		@Tag("test_v1.x")
 		public void testEmptyFile() {
-			testCountOutput(ProjectPaths.EMPTY);
+			testCountOutput(ProjectPath.EMPTY);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class CountTests {
 		@Order(1)
 		@Test
 		public void testSimple() {
-			testCountOutput(ProjectPaths.SIMPLE);
+			testCountOutput(ProjectPath.SIMPLE);
 		}
 
 		/**
@@ -126,7 +126,7 @@ public class CountTests {
 		@Order(2)
 		@Test
 		public void testRFCs() {
-			testCountOutput(ProjectPaths.RFCS);
+			testCountOutput(ProjectPath.RFCS);
 		}
 
 		/**
@@ -135,7 +135,7 @@ public class CountTests {
 		@Order(3)
 		@Test
 		public void testGuten() {
-			testCountOutput(ProjectPaths.GUTEN);
+			testCountOutput(ProjectPath.GUTEN);
 		}
 
 		/**
@@ -147,7 +147,7 @@ public class CountTests {
 		@Tag("test_v1.1")
 		@Tag("test_v1.x")
 		public void testText() {
-			testCountOutput(ProjectPaths.TEXT);
+			testCountOutput(ProjectPath.TEXT);
 		}
 	}
 
@@ -300,12 +300,12 @@ public class CountTests {
 	 */
 	public static void testCountOutput(Path input, String id) {
 		String filename = String.format("counts-%s.json", id);
-		Path actual = ProjectPaths.ACTUAL.resolve(filename);
-		Path expected = ProjectPaths.EXPECTED.resolve("counts").resolve(filename);
+		Path actual = ProjectPath.ACTUAL.resolve(filename);
+		Path expected = ProjectPath.EXPECTED.resolve("counts").resolve(filename);
 
 		String[] args = {
-				ProjectFlags.TEXT.flag, input.normalize().toString(),
-				ProjectFlags.COUNTS.flag, actual.normalize().toString()
+				ProjectFlag.TEXT.flag, input.normalize().toString(),
+				ProjectFlag.COUNTS.flag, actual.normalize().toString()
 		};
 
 		Executable debug = () -> checkOutput(args, actual, expected);
@@ -318,7 +318,7 @@ public class CountTests {
 	 * @param path the project path to use
 	 * @see CountTests#testCountOutput(Path, String)
 	 */
-	public static void testCountOutput(ProjectPaths path) {
+	public static void testCountOutput(ProjectPath path) {
 		testCountOutput(path.path, path.id);
 	}
 }
