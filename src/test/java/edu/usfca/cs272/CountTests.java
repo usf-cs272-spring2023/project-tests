@@ -130,9 +130,18 @@ public class CountTests {
 		}
 
 		/**
-		 *  @see CountTests#testCountOutput(Path, String)
+		 * @see CountTests#testCountOutput(Path, String)
 		 */
 		@Order(3)
+		@Test
+		public void testGuten() {
+			testCountOutput(ProjectPaths.GUTEN);
+		}
+
+		/**
+		 *  @see CountTests#testCountOutput(Path, String)
+		 */
+		@Order(4)
 		@Test
 		@Tag("test_v1.0")
 		@Tag("test_v1.1")
