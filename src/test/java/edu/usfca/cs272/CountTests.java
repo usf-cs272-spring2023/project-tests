@@ -78,7 +78,7 @@ public class CountTests {
 		 */
 		@Order(4)
 		@Test
-		public void testRFCFile() {
+		public void testRrcsFile() {
 			testCountOutput(ProjectPath.RFCS_HTTP);
 		}
 
@@ -125,7 +125,7 @@ public class CountTests {
 		 */
 		@Order(2)
 		@Test
-		public void testRFCs() {
+		public void testRfcs() {
 			testCountOutput(ProjectPath.RFCS);
 		}
 
