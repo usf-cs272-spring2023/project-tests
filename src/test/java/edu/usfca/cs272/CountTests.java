@@ -232,10 +232,10 @@ public class CountTests {
 		public void testDefaultOutput() throws IOException {
 			String[] args = { TEXT.flag, HELLO.text, COUNTS.flag };
 
-			// make sure to delete old index.json if it exists
+			// make sure to delete old counts.json if it exists
 			Files.deleteIfExists(COUNTS.path);
 
-			// make sure a new index.json was created
+			// make sure a new counts.json was created
 			testNoExceptions(args, SHORT_TIMEOUT);
 
 			// generate debug output
@@ -257,10 +257,10 @@ public class CountTests {
 		public void testEmptyOutput() throws IOException {
 			String[] args = { COUNTS.flag };
 
-			// make sure to delete old index.json if it exists
+			// make sure to delete old counts.json if it exists
 			Files.deleteIfExists(COUNTS.path);
 
-			// make sure a new index.json was created
+			// make sure a new counts.json was created
 			testNoExceptions(args, SHORT_TIMEOUT);
 
 			// generate debug output
@@ -282,10 +282,10 @@ public class CountTests {
 		public void testSwitchedOrder() throws IOException {
 			String[] args = { COUNTS.flag, TEXT.flag, HELLO.text };
 
-			// make sure to delete old index.json if it exists
+			// make sure to delete old counts.json if it exists
 			Files.deleteIfExists(COUNTS.path);
 
-			// make sure a new index.json was created
+			// make sure a new counts.json was created
 			testNoExceptions(args, SHORT_TIMEOUT);
 			Assertions.assertTrue(Files.exists(COUNTS.path));
 		}
