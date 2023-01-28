@@ -40,7 +40,7 @@ public class CountTests {
 	@Nested
 	@Order(1)
 	@TestMethodOrder(OrderAnnotation.class)
-	public class CountFileTests {
+	public class FileTests {
 		/**
 		 * @see CountTests#testCountOutput(Path, String)
 		 */
@@ -110,7 +110,7 @@ public class CountTests {
 	@Nested
 	@Order(2)
 	@TestMethodOrder(OrderAnnotation.class)
-	public class CountDirectoryTests {
+	public class DirectoryTests {
 		/**
 		 * @see CountTests#testCountOutput(Path, String)
 		 */
@@ -160,7 +160,7 @@ public class CountTests {
 	@Tag("test_v1.0")
 	@Tag("test_v1.1")
 	@Tag("test_v1.x")
-	public class CountExceptionTests {
+	public class ExceptionTests {
 		/**
 		 * Tests no exceptions are thrown with no arguments.
 		 */
