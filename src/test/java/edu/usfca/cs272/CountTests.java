@@ -164,8 +164,8 @@ public class CountTests {
 		/**
 		 * Tests no exceptions are thrown with no arguments.
 		 */
-		@Order(1)
 		@Test
+		@Order(1)
 		public void testNoArguments() {
 			String[] args = {};
 			testNoExceptions(args, SHORT_TIMEOUT);
@@ -174,8 +174,8 @@ public class CountTests {
 		/**
 		 * Tests no exceptions are thrown with invalid arguments.
 		 */
-		@Order(2)
 		@Test
+		@Order(2)
 		public void testBadArguments() {
 			String[] args = { "hello", "world" };
 			testNoExceptions(args, SHORT_TIMEOUT);
@@ -184,8 +184,8 @@ public class CountTests {
 		/**
 		 * Tests no exceptions are thrown with a missing path value.
 		 */
-		@Order(3)
 		@Test
+		@Order(3)
 		public void testMissingPath() {
 			String[] args = { "-text" };
 			testNoExceptions(args, SHORT_TIMEOUT);
@@ -194,8 +194,8 @@ public class CountTests {
 		/**
 		 * Tests no exceptions are thrown with an invalid path value.
 		 */
-		@Order(4)
 		@Test
+		@Order(4)
 		public void testInvalidPath() {
 			// generates a random path name
 			String path = Long.toHexString(Double.doubleToLongBits(Math.random()));
@@ -208,8 +208,8 @@ public class CountTests {
 		 *
 		 * @throws IOException if IO error occurs
 		 */
-		@Order(5)
 		@Test
+		@Order(5)
 		public void testNoOutput() throws IOException {
 			Path output = COUNTS.path;
 			String[] args = { TEXT.flag, HELLO.text };
@@ -227,8 +227,8 @@ public class CountTests {
 		 *
 		 * @throws IOException if IO error occurs
 		 */
-		@Order(6)
 		@Test
+		@Order(6)
 		public void testDefaultOutput() throws IOException {
 			String[] args = { TEXT.flag, HELLO.text, COUNTS.flag };
 
@@ -252,8 +252,8 @@ public class CountTests {
 		 *
 		 * @throws IOException if IO error occurs
 		 */
-		@Order(7)
 		@Test
+		@Order(7)
 		public void testEmptyOutput() throws IOException {
 			String[] args = { COUNTS.flag };
 
@@ -277,8 +277,8 @@ public class CountTests {
 		 *
 		 * @throws IOException if IO error occurs
 		 */
-		@Order(8)
 		@Test
+		@Order(8)
 		public void testSwitchedOrder() throws IOException {
 			String[] args = { COUNTS.flag, TEXT.flag, HELLO.text };
 
