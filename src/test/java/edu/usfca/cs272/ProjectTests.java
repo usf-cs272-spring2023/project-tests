@@ -1,5 +1,9 @@
 package edu.usfca.cs272;
 
+import static edu.usfca.cs272.ProjectPaths.ACTUAL;
+import static edu.usfca.cs272.ProjectPaths.EXPECTED;
+import static edu.usfca.cs272.ProjectPaths.QUERY;
+import static edu.usfca.cs272.ProjectPaths.TEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.BufferedReader;
@@ -33,71 +37,6 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
  * @version Spring 2023
  */
 public class ProjectTests {
-	/**
-	 * Detect whether paths are Unix-like (true for Linux, Mac, but not Windows)
-	 */
-	public static final boolean NIX = File.separator.equals("/");
-
-	/** Path to the actual output files. */
-	public static final Path ACTUAL_PATH = Path.of("actual");
-
-	/** Path to the expected output files (based on type of slash). */
-	public static final Path EXPECTED_PATH = Path.of(NIX ? "expected-nix" : "expected-win");
-
-	/** Path to the input files. */
-	public static final Path INPUT_PATH = Path.of("input");
-
-	/** Path to the input text files. */
-	public static final Path TEXT_PATH = INPUT_PATH.resolve("text");
-
-	/** Path to the input query files. */
-	public static final Path QUERY_PATH = INPUT_PATH.resolve("query");
-
-	/** Flag to indicate the path to index as text. */
-	public static final String TEXT_FLAG = "-text";
-
-	/** Flag to indicate the URL to index as html. */
-	public static final String HTML_FLAG = "-html";
-
-	/** Flag to indicate what queries to search for in the index. */
-	public static final String QUERY_FLAG = "-query";
-
-	/** Flag to indicate whether to conduct an exact or partial search. */
-	public static final String EXACT_FLAG = "-exact";
-
-	/** Flag to enable threading with the specified number of threads. */
-	public static final String THREADS_FLAG = "-threads";
-
-	/** The default value for the threads flag. */
-	public static final int THREADS_DEFAULT = 5;
-
-	/** Flag to set the maximum number of URLs to process as HTML. */
-	public static final String MAX_FLAG = "-max";
-
-	/** Flag to enable the web server on the specified port. */
-	public static final String SERVER_FLAG = "-server";
-
-	/** The default value for the server or port flag. */
-	public static final int PORT_DEFAULT = 8080;
-
-	/** Flag to indicate whether to output the inverted index to JSON. */
-	public static final String INDEX_FLAG = "-index";
-
-	/** The default value for the index output path. */
-	public static final Path INDEX_DEFAULT = Path.of("index.json");
-
-	/** Flag to indicate whether to output the location word counts to JSON. */
-	public static final String COUNTS_FLAG = "-counts";
-
-	/** The default value for the result output path flag. */
-	public static final Path COUNTS_DEFAULT = Path.of("counts.json");
-
-	/** Flag to indicate whether to output the search results to JSON. */
-	public static final String RESULTS_FLAG = "-results";
-
-	/** The default value for the result output path flag. */
-	public static final Path RESULTS_DEFAULT = Path.of("results.json");
-
 	/** Format string for JUnit error output. */
 	private static final String ERROR_FORMAT = """
 
@@ -140,9 +79,9 @@ public class ProjectTests {
 	}
 
 	/**
-	 * Checks line-by-line if two files are equal. If one file contains extra
-	 * blank lines at the end of the file, the two are still considered equal.
-	 * Works even if the path separators in each file are different.
+	 * Checks line-by-line if two files are equal. If one file contains extra blank
+	 * lines at the end of the file, the two are still considered equal. Works even
+	 * if the path separators in each file are different.
 	 *
 	 * @param path1 path to first file to compare with
 	 * @param path2 path to second file to compare with
@@ -194,10 +133,9 @@ public class ProjectTests {
 						// only true if both are null, otherwise one file had extra non-empty lines
 						return count;
 					}
-					else {
-						// extra blank lines found in one file
-						return -count;
-					}
+
+					// extra blank lines found in one file
+					return -count;
 				}
 			}
 		}
@@ -205,8 +143,8 @@ public class ProjectTests {
 
 	/**
 	 * Checks whether {@link Driver} generates the expected output without any
-	 * exceptions. Will print the stack trace if an exception occurs. Designed to
-	 * be used within an unit test. If the test was successful, deletes the actual
+	 * exceptions. Will print the stack trace if an exception occurs. Designed to be
+	 * used within an unit test. If the test was successful, deletes the actual
 	 * file. Otherwise, keeps the file for debugging purposes.
 	 *
 	 * @param args arguments to pass to {@link Driver}
@@ -257,8 +195,8 @@ public class ProjectTests {
 
 	/**
 	 * Checks whether {@link Driver} will run without generating any exceptions.
-	 * Will print the stack trace if an exception occurs. Designed to be used
-	 * within an unit test.
+	 * Will print the stack trace if an exception occurs. Designed to be used within
+	 * an unit test.
 	 *
 	 * @param args arguments to pass to {@link Driver}
 	 * @param timeout the duration to run before timing out
@@ -273,8 +211,8 @@ public class ProjectTests {
 				StringWriter writer = new StringWriter();
 				e.printStackTrace(new PrintWriter(writer));
 
-				String debug = String.format("%nArguments:%n    [%s]%nException:%n    %s%n",
-						String.join(" ", args), writer.toString());
+				String format = "%nArguments:%n    [%s]%nException:%n    %s%n";
+				String debug = String.format(format, String.join(" ", args), writer.toString());
 				Assertions.fail(debug);
 			}
 		});
@@ -335,9 +273,8 @@ public class ProjectTests {
 	public static List<String> activeThreads() {
 		int active = Thread.activeCount(); // only an estimate
 		Thread[] threads = new Thread[active * 2]; // make sure large enough
-		Thread.enumerate(threads);
-
-		return Arrays.stream(threads).filter(t -> t != null).map(t -> t.getName()).collect(Collectors.toList());
+		Thread.enumerate(threads); // fill in active threads
+		return Arrays.stream(threads).filter(t -> t != null).map(Thread::getName).toList();
 	}
 
 	/**
@@ -353,12 +290,11 @@ public class ProjectTests {
 			// e.g. index-simple.json
 			return String.format("%s-%s.json", prefix, path.getFileName().toString());
 		}
-		else {
-			// e.g. index-simple-hello.json
-			String[] parts = path.getFileName().toString().split("\\.");
-			String subdir = path.getParent().getFileName().toString();
-			return String.format("%s-%s-%s.json", prefix, subdir, parts[0]);
-		}
+
+		// e.g. index-simple-hello.json
+		String[] parts = path.getFileName().toString().split("\\.");
+		String subdir = path.getParent().getFileName().toString();
+		return String.format("%s-%s-%s.json", prefix, subdir, parts[0]);
 	}
 
 	/**
@@ -376,12 +312,11 @@ public class ProjectTests {
 			// e.g. index-simple-1.json
 			return String.format("%s-%s-%d.json", prefix, path.getFileName().toString(), threads);
 		}
-		else {
-			// e.g. index-simple-hello-1.json
-			String[] parts = path.getFileName().toString().split("\\.");
-			String subdir = path.getParent().getFileName().toString();
-			return String.format("%s-%s-%s-%d.json", prefix, subdir, parts[0], threads);
-		}
+
+		// e.g. index-simple-hello-1.json
+		String[] parts = path.getFileName().toString().split("\\.");
+		String subdir = path.getParent().getFileName().toString();
+		return String.format("%s-%s-%s-%d.json", prefix, subdir, parts[0], threads);
 	}
 
 	/**
@@ -389,14 +324,14 @@ public class ProjectTests {
 	 */
 	@BeforeAll
 	public static void testEnvironment() {
-		System.out.println("Using: " + EXPECTED_PATH);
+		System.out.println("Using: " + EXPECTED.text);
 
 		try {
-			Files.createDirectories(ACTUAL_PATH);
+			Files.createDirectories(ACTUAL.path);
 
 			// delete any old files located in actual directory
 			System.out.println("Cleaning up old actual files...");
-			Files.walk(ACTUAL_PATH).filter(Files::isRegularFile).forEach(path -> {
+			Files.walk(ACTUAL.path).filter(Files::isRegularFile).forEach(path -> {
 				try {
 					Files.delete(path);
 				}
@@ -411,7 +346,7 @@ public class ProjectTests {
 
 		try {
 			// only make Windows files if necessary
-			if (!NIX) {
+			if (!File.separator.equals("/")) {
 				System.out.println("Windows detected; generating expected files.");
 				List<Path> copied = copyExpected();
 				System.out.println("Copied: " + copied.size() + " files.");
@@ -423,10 +358,12 @@ public class ProjectTests {
 			Assertions.fail("Unable to copy expected files for Windows systems.");
 		}
 
-		Assertions.assertAll(() -> Assertions.assertTrue(Files.isReadable(EXPECTED_PATH), EXPECTED_PATH.toString()),
-				() -> Assertions.assertTrue(Files.isWritable(ACTUAL_PATH), ACTUAL_PATH.toString()),
-				() -> Assertions.assertTrue(Files.isDirectory(TEXT_PATH), TEXT_PATH.toString()),
-				() -> Assertions.assertTrue(Files.isDirectory(QUERY_PATH), QUERY_PATH.toString()));
+		Assertions.assertAll(
+				() -> Assertions.assertTrue(Files.isReadable(EXPECTED.path), EXPECTED.text),
+				() -> Assertions.assertTrue(Files.isWritable(ACTUAL.path), ACTUAL.text),
+				() -> Assertions.assertTrue(Files.isDirectory(TEXT.path), TEXT.text),
+				() -> Assertions.assertTrue(Files.isDirectory(QUERY.path), QUERY.text)
+		);
 	}
 
 	/**
@@ -516,12 +453,12 @@ public class ProjectTests {
 		double after = (double) (runtime.totalMemory() - runtime.freeMemory()) / bytes;
 
 		String format = """
-
+				```
 				%8.2f Processors
 				%8.2f MB Memory Maximum
 				%8.2f MB Memory Used (Before GC)
 				%8.2f MB Memory Used (After GC)
-
+				```
 				""";
 
 		System.out.printf(format, (double) processors, maximum, before, after);
