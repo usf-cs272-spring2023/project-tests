@@ -36,9 +36,9 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
  * @author CS 272 Software Development (University of San Francisco)
  * @version Spring 2023
  */
-public class ProjectTests {
+public interface ProjectTests {
 	/** Format string for JUnit error output. */
-	private static final String ERROR_FORMAT = """
+	public static final String ERROR_FORMAT = """
 
 			Working Directory:
 			%s
