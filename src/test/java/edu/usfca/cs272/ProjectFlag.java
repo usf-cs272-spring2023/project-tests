@@ -13,7 +13,7 @@ public enum ProjectFlag {
 	QUERY("-query", null),
 
 	/** Flag to indicate whether to conduct an exact or partial search */
-	EXACT("-exact", null),
+	PARTIAL("-partial", null),
 
 	/** Flag to indicate the URL to index as html */
 	HTML("-html", null),
