@@ -201,6 +201,8 @@ public class ThreadBuildTests {
 			testCount(ProjectPath.TEXT, threads);
 		}
 
+		// TODO testTextIndexCounts
+
 		/**
 		 * Free up memory after running --- useful for following tests.
 		 */
