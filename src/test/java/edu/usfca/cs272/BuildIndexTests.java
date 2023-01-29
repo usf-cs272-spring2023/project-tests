@@ -291,9 +291,9 @@ public class BuildIndexTests {
 	 */
 	public static void testOutput(String subdir, Path input, String id) {
 		String filename = String.format("index-%s.json", id);
-		Path actual = ACTUAL.resolve(filename);
-		Path expected = EXPECTED.resolve("index").resolve(subdir).resolve(filename);
-		String[] args = { TEXT.flag, input.normalize().toString(), INDEX.flag, actual.normalize().toString() };
+		Path actual = ACTUAL.resolve(filename).normalize();
+		Path expected = EXPECTED.resolve("index").resolve(subdir).resolve(filename).normalize();
+		String[] args = { TEXT.flag, input.toString(), INDEX.flag, actual.toString() };
 		Executable test = () -> checkOutput(args, actual, expected);
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
 	}

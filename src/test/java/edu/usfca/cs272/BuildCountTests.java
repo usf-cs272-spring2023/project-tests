@@ -274,14 +274,9 @@ public class BuildCountTests {
 	 */
 	public static void testOutput(Path input, String id) {
 		String filename = String.format("counts-%s.json", id);
-		Path actual = ProjectPath.ACTUAL.resolve(filename);
-		Path expected = ProjectPath.EXPECTED.resolve("counts").resolve(filename);
-
-		String[] args = {
-				ProjectFlag.TEXT.flag, input.normalize().toString(),
-				ProjectFlag.COUNTS.flag, actual.normalize().toString()
-		};
-
+		Path actual = ProjectPath.ACTUAL.resolve(filename).normalize();
+		Path expected = ProjectPath.EXPECTED.resolve("counts").resolve(filename).normalize();
+		String[] args = { ProjectFlag.TEXT.flag, input.toString(), ProjectFlag.COUNTS.flag, actual.toString() };
 		Executable debug = () -> checkOutput(args, actual, expected);
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, debug);
 	}
