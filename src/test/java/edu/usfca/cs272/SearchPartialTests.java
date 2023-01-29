@@ -1,5 +1,7 @@
 package edu.usfca.cs272;
 
+import static edu.usfca.cs272.ProjectFlag.PARTIAL;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.TestClassOrder;
@@ -19,5 +21,6 @@ public class SearchPartialTests extends SearchExactTests {
 	@BeforeEach
 	public void setup() {
 		super.partial = true;
+		super.searchFlag = partial ? PARTIAL.flag : "";
 	}
 }
