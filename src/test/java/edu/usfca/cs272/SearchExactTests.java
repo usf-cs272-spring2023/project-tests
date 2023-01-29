@@ -18,6 +18,7 @@ import static org.junit.jupiter.params.provider.EnumSource.Mode.MATCH_ALL;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,7 +62,7 @@ public class SearchExactTests {
 	@Nested
 	@Order(1)
 	@TestMethodOrder(OrderAnnotation.class)
-	public class OutputTests {
+	public class InitialTests {
 		/**
 		 * See the JUnit output for test details.
 		 */
@@ -106,14 +107,22 @@ public class SearchExactTests {
 		public void testRfcsLetters() {
 			testOutput(partial, "letters", ProjectPath.RFCS);
 		}
+	}
 
+	/**
+	 * Tests the output of this project.
+	 */
+	@Nested
+	@Order(2)
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ComplexTests {
 		/**
 		 * See the JUnit output for test details.
 		 *
 		 * @param path the path
 		 */
 		@ParameterizedTest
-		@Order(6)
+		@Order(1)
 		@EnumSource(mode = MATCH_ALL, names = "^GUTEN_.+")
 		public void testGutenFiles(ProjectPath path) {
 			testOutput(partial, "complex", path);
@@ -123,7 +132,7 @@ public class SearchExactTests {
 		 * See the JUnit output for test details.
 		 */
 		@Test
-		@Order(7)
+		@Order(2)
 		public void testGutenComplex() {
 			testOutput(partial, "complex", ProjectPath.GUTEN);
 		}
@@ -132,7 +141,7 @@ public class SearchExactTests {
 		 * See the JUnit output for test details.
 		 */
 		@Test
-		@Order(8)
+		@Order(3)
 		public void testTextWords() {
 			testOutput(partial, "words", ProjectPath.TEXT);
 		}
@@ -141,7 +150,7 @@ public class SearchExactTests {
 		 * See the JUnit output for test details.
 		 */
 		@Test
-		@Order(9)
+		@Order(4)
 		public void testTextRespect() {
 			testOutput(partial, "respect", ProjectPath.TEXT);
 		}
@@ -150,9 +159,46 @@ public class SearchExactTests {
 		 * See the JUnit output for test details.
 		 */
 		@Test
-		@Order(10)
+		@Order(5)
 		public void testTextComplex() {
 			testOutput(partial, "complex", ProjectPath.TEXT);
+		}
+
+		/**
+		 * See the JUnit output for test details.
+		 */
+		@Test
+		@Order(6)
+		public void testCountsIndexResults() {
+			ProjectPath input = ProjectPath.TEXT;
+			String query = "complex";
+			String type = partial ? "partial" : "exact";
+
+			String indexName = String.format("index-%s.json", input.id);
+			String countsName = String.format("counts-%s.json", input.id);
+			String resultsName = String.format("%s-%s-%s.json", type, query, input.id);
+
+			Path indexActual = ACTUAL.resolve(indexName);
+			Path countsActual = ACTUAL.resolve(countsName);
+			Path resultsActual = ACTUAL.resolve(resultsName);
+
+			String[] args = {
+					TEXT.flag, input.text,
+					INDEX.flag, indexActual.toString(),
+					COUNTS.flag, countsActual.toString(),
+					QUERY.flag, ProjectPath.QUERY.resolve(query + ".txt").toString(),
+					RESULTS.flag, resultsActual.toString(),
+					partial ? PARTIAL.flag : ""
+			};
+
+			Map<Path, Path> files = Map.of(
+					ACTUAL.resolve(countsName), EXPECTED.resolve("counts").resolve(countsName),
+					ACTUAL.resolve(indexName), EXPECTED.resolve("index").resolve(indexName),
+					ACTUAL.resolve(resultsName), EXPECTED.resolve(type).resolve(resultsName)
+			);
+
+			Executable test = () -> ProjectTests.checkOutput(args, files);
+			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
 		}
 	}
 
@@ -160,7 +206,7 @@ public class SearchExactTests {
 	 * Tests the index exception handling of this project.
 	 */
 	@Nested
-	@Order(2)
+	@Order(3)
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
