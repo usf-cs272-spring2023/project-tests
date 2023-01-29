@@ -8,6 +8,7 @@ import static edu.usfca.cs272.ProjectPath.EXPECTED;
 import static edu.usfca.cs272.ProjectPath.HELLO;
 import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
+import static edu.usfca.cs272.ProjectTests.checkOutput;
 import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 import static org.junit.jupiter.params.provider.EnumSource.Mode.MATCH_ALL;
 
@@ -293,7 +294,7 @@ public class BuildIndexTests {
 		Path actual = ACTUAL.resolve(filename);
 		Path expected = EXPECTED.resolve("index").resolve(subdir).resolve(filename);
 		String[] args = { TEXT.flag, input.normalize().toString(), INDEX.flag, actual.normalize().toString() };
-		Executable test = () -> ProjectTests.checkOutput(args, actual, expected);
+		Executable test = () -> checkOutput(args, actual, expected);
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
 	}
 
