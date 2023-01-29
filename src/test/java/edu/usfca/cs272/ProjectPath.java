@@ -84,7 +84,22 @@ public enum ProjectPath {
 	GUTEN_GREAT("input", "text", "guten", "1400-0.txt"),
 
 	/** Path to the input query files */
-	QUERY("input", "query");
+	QUERY("input", "query"),
+
+	/** Path to the input query simple file */
+	QUERY_SIMPLE("input", "query", "simple.txt"),
+
+	/** Path to the input query simple file */
+	QUERY_WORDS("input", "query", "words.txt"),
+
+	/** Path to the input query simple file */
+	QUERY_RESPECT("input", "query", "respect.txt"),
+
+	/** Path to the input query simple file */
+	QUERY_LETTERS("input", "query", "letters.txt"),
+
+	/** Path to the input query simple file */
+	QUERY_COMPLEX("input", "query", "complex.txt");
 
 	/** The normalized relative path */
 	public final Path path;
