@@ -7,7 +7,7 @@ import java.nio.file.Path;
 /**
  * The commonly-used paths for testing.
  */
-public enum ProjectPaths {
+public enum ProjectPath {
 	/** Path to the actual output files */
 	ACTUAL("actual"),
 
@@ -100,7 +100,7 @@ public enum ProjectPaths {
 	 *
 	 * @param paths the subpaths to use to create a path object
 	 */
-	private ProjectPaths(String... paths) {
+	private ProjectPath(String... paths) {
 		this.path = Path.of(".", paths).normalize();
 		this.text = this.path.toString();
 		this.id = id(this.path);

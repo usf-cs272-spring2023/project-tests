@@ -5,7 +5,7 @@ import java.nio.file.Path;
 /**
  * The command-line flag/value arguments supported by the search engine project.
  */
-public enum ProjectFlags {
+public enum ProjectFlag {
 	/** Flag to indicate the path to index as text */
 	TEXT("-text", null),
 
@@ -51,7 +51,7 @@ public enum ProjectFlags {
 	 * @param flag the flag with the leading dash
 	 * @param value the default value if missing or null if no default value
 	 */
-	private ProjectFlags(String flag, String value) {
+	private ProjectFlag(String flag, String value) {
 		this.flag = flag;
 		this.value = value;
 		this.path = value == null ? null : Path.of(value);
