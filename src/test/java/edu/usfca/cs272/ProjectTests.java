@@ -298,6 +298,8 @@ public interface ProjectTests {
 			workers.removeIf(name -> name.startsWith("junit")); // remove junit timeout threads
 			workers.removeIf(name -> name.startsWith("ForkJoinPool")); // remove other junit threads
 
+			System.out.println("Workers: " + workers);
+
 			String message = "Unable to detect any worker threads. Are you 100% positive threads are being created and used in your code? You can debug this by producing log output inside the run method of your thread objects. This is an imperfect test; if you are able to verify threads are being created and used, make a private post on Piazza. The instructor will look into the problem.";
 			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\n\n%s\n";
 			Assertions.assertTrue(workers.size() > 0, debug.formatted(before, finish, workers, message));
@@ -492,12 +494,14 @@ public interface ProjectTests {
 		double after = (double) (runtime.totalMemory() - runtime.freeMemory()) / bytes;
 
 		String format = """
+
 				```
 				%8.2f Processors
 				%8.2f MB Memory Maximum
 				%8.2f MB Memory Used (Before GC)
 				%8.2f MB Memory Used (After GC)
 				```
+
 				""";
 
 		System.out.printf(format, (double) processors, maximum, before, after);
