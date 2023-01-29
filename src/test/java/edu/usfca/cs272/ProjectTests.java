@@ -1,9 +1,9 @@
 package edu.usfca.cs272;
 
-import static edu.usfca.cs272.ProjectPaths.ACTUAL;
-import static edu.usfca.cs272.ProjectPaths.EXPECTED;
-import static edu.usfca.cs272.ProjectPaths.QUERY;
-import static edu.usfca.cs272.ProjectPaths.TEXT;
+import static edu.usfca.cs272.ProjectPath.ACTUAL;
+import static edu.usfca.cs272.ProjectPath.EXPECTED;
+import static edu.usfca.cs272.ProjectPath.QUERY;
+import static edu.usfca.cs272.ProjectPath.TEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.BufferedReader;
@@ -20,6 +20,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -73,9 +74,23 @@ public interface ProjectTests {
 	 * @return formatted error message
 	 */
 	public static String errorMessage(String[] args, Path actual, Path expected, String message) {
-		Path working = Path.of(".").toAbsolutePath().normalize();
-		return String.format(ERROR_FORMAT, working.toString(), actual.toString(), expected.toString(),
-				String.join(" ", args), message);
+		return errorMessage(args, actual.toString(), expected.toString(), message);
+	}
+
+	/**
+	 * Produces debug-friendly output when a JUnit test fails.
+	 *
+	 * @param args original arguments sent to {@link Driver}
+	 * @param actual path(s) to actual output
+	 * @param expected path(s) to expected output
+	 * @param message error message with more details
+	 *
+	 * @return formatted error message
+	 */
+	public static String errorMessage(String[] args, String actual, String expected, String message) {
+		String working = Path.of(".").toAbsolutePath().normalize().toString();
+		String test = String.join(" ", args);
+		return String.format(ERROR_FORMAT, working, actual, expected, test, message);
 	}
 
 	/**
@@ -152,43 +167,66 @@ public interface ProjectTests {
 	 * @param expected path to expected output
 	 */
 	public static void checkOutput(String[] args, Path actual, Path expected) {
+		checkOutput(args, Map.of(actual, expected));
+	}
+
+	/**
+	 * Checks whether {@link Driver} generates the expected output without any
+	 * exceptions. Will print the stack trace if an exception occurs. Designed to be
+	 * used within an unit test. If the test was successful, deletes the actual
+	 * files. Otherwise, keeps the files for debugging purposes.
+	 *
+	 * @param args arguments to pass to {@link Driver}
+	 * @param files map of actual to expected files to test
+	 */
+	public static void checkOutput(String[] args, Map<Path, Path> files) {
 		try {
-			// Remove old actual file (if exists), setup directories if needed
-			Files.deleteIfExists(actual);
-			Files.createDirectories(actual.getParent());
+			// Remove old actual files (if exists), setup directories if needed
+			for (Path actual : files.keySet()) {
+				Files.deleteIfExists(actual);
+				Files.createDirectories(actual.getParent());
+			}
 
 			// Generate actual output file
-			System.out.printf("%nRunning: %s...%n", actual.toString());
+			System.out.printf("%nRunning: %s...%n", Arrays.toString(args));
 			Driver.main(args);
 
-			// Double-check we can read the expected output file
-			if (!Files.isReadable(expected)) {
-				String message = "Unable to read expected output file.";
-				Assertions.fail(errorMessage(args, actual, expected, message));
+			// Check the output of each expected output file
+			for (var entry : files.entrySet()) {
+				Path actual = entry.getKey();
+				Path expected = entry.getValue();
+
+				// Double-check we can read the expected output file
+				if (!Files.isReadable(expected)) {
+					String message = "Unable to read expected output file.";
+					Assertions.fail(errorMessage(args, actual, expected, message));
+				}
+
+				// Double-check we can read the actual output file
+				if (!Files.isReadable(actual)) {
+					String message = "Unable to read actual output file.";
+					Assertions.fail(errorMessage(args, actual, expected, message));
+				}
+
+				// Compare the two files
+				int count = checkFiles(actual, expected);
+
+				if (count <= 0) {
+					String message = "Difference detected on line: " + -count + ".";
+					Assertions.fail(errorMessage(args, actual, expected, message));
+				}
+
+				// At this stage, the files were the same and we can delete actual.
+				Files.deleteIfExists(actual);
 			}
-
-			// Double-check we can read the actual output file
-			if (!Files.isReadable(actual)) {
-				String message = "Unable to read actual output file.";
-				Assertions.fail(errorMessage(args, actual, expected, message));
-			}
-
-			// Compare the two files
-			int count = checkFiles(actual, expected);
-
-			if (count <= 0) {
-				String message = "Difference detected on line: " + -count + ".";
-				Assertions.fail(errorMessage(args, actual, expected, message));
-			}
-
-			// At this stage, the files were the same and we can delete actual.
-			Files.deleteIfExists(actual);
 		}
 		catch (Exception e) {
 			StringWriter writer = new StringWriter();
 			e.printStackTrace(new PrintWriter(writer));
 
 			String message = writer.toString();
+			String actual = files.keySet().toString();
+			String expected = files.values().toString();
 			Assertions.fail(errorMessage(args, actual, expected, message));
 		}
 	}
