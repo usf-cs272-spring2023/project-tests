@@ -6,13 +6,11 @@ import static edu.usfca.cs272.ProjectPath.HELLO;
 import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.checkOutput;
-import static edu.usfca.cs272.ProjectTests.errorMessage;
 import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.ClassOrderer;
@@ -26,143 +24,139 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.function.Executable;
 
 /**
- * A test suite for project v1.0. During development, run individual tests instead
- * of this entire test suite!
+ * A test suite for project v1.0.
  *
  * @author CS 272 Software Development (University of San Francisco)
  * @version Spring 2023
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class CountTests {
+public class BuildCountTests {
 	/**
-	 * Tests the counts output of this project.
+	 * Tests the output of this project.
 	 */
 	@Nested
 	@Order(1)
 	@TestMethodOrder(OrderAnnotation.class)
 	public class FileTests {
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(1)
 		@Test
-		public void testHelloFile() {
-			testCountOutput(ProjectPath.HELLO);
+		public void testHello() {
+			testOutput(ProjectPath.HELLO);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(2)
 		@Test
-		@Tag("test_v1.0")
-		@Tag("test_v1.1")
-		@Tag("test_v1.x")
-		public void testSentencesFile() {
+		public void testSentences() {
 			Path input = ProjectPath.SIMPLE.resolve("sentences.md");
 			String id = ProjectPath.id(input);
-			testCountOutput(input, id);
+			testOutput(input, id);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(3)
 		@Test
-		public void testStemFile() {
-			testCountOutput(ProjectPath.STEMS_IN);
+		public void testStemIn() {
+			testOutput(ProjectPath.STEMS_IN);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(4)
 		@Test
-		public void testRrcsFile() {
-			testCountOutput(ProjectPath.RFCS_HTTP);
+		public void testRfcHttp() {
+			testOutput(ProjectPath.RFCS_HTTP);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(4)
 		@Test
-		public void testGutenFile() {
-			testCountOutput(ProjectPath.GUTEN_GREAT);
+		public void testGutenGreat() {
+			testOutput(ProjectPath.GUTEN_GREAT);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(5)
 		@Test
 		@Tag("test_v1.0")
 		@Tag("test_v1.1")
 		@Tag("test_v1.x")
-		public void testEmptyFile() {
-			testCountOutput(ProjectPath.EMPTY);
+		public void testEmpty() {
+			testOutput(ProjectPath.EMPTY);
 		}
 	}
 
 	/**
-	 * Tests the counts output of this project.
+	 * Tests the output of this project.
 	 */
 	@Nested
 	@Order(2)
 	@TestMethodOrder(OrderAnnotation.class)
 	public class DirectoryTests {
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(1)
 		@Test
 		public void testSimple() {
-			testCountOutput(ProjectPath.SIMPLE);
+			testOutput(ProjectPath.SIMPLE);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(2)
 		@Test
 		public void testRfcs() {
-			testCountOutput(ProjectPath.RFCS);
+			testOutput(ProjectPath.RFCS);
 		}
 
 		/**
-		 * @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(3)
 		@Test
 		public void testGuten() {
-			testCountOutput(ProjectPath.GUTEN);
+			testOutput(ProjectPath.GUTEN);
 		}
 
 		/**
-		 *  @see CountTests#testCountOutput(Path, String)
+		 * See the JUnit output for test details.
 		 */
 		@Order(4)
 		@Test
-		@Tag("test_v1.0")
-		@Tag("test_v1.1")
-		@Tag("test_v1.x")
 		public void testText() {
-			testCountOutput(ProjectPath.TEXT);
+			testOutput(ProjectPath.TEXT);
 		}
 	}
 
 	/**
-	 * Tests the counts exception handling of this project.
+	 * Tests the exception handling of this project.
 	 */
 	@Nested
 	@Order(3)
+	@Tag("test-v1.0") @Tag("test-v1.1") @Tag("test-v1.x")
+	@Tag("past-v1.1") @Tag("past-v1.x")
+	@Tag("past-v2.0") @Tag("past-v2.1") @Tag("past-v2.x")
+	@Tag("past-v3.0") @Tag("past-v3.1") @Tag("past-v3.x")
+	@Tag("past-v4.0") @Tag("past-v4.1") @Tag("past-v4.x")
+	@Tag("past-v5.0")
 	@TestMethodOrder(OrderAnnotation.class)
-	@Tag("test_v1.0")
-	@Tag("test_v1.1")
-	@Tag("test_v1.x")
 	public class ExceptionTests {
 		/**
-		 * Tests no exceptions are thrown with no arguments.
+		 * Tests no exceptions are thrown with the provided arguments.
 		 */
 		@Test
 		@Order(1)
@@ -172,30 +166,40 @@ public class CountTests {
 		}
 
 		/**
-		 * Tests no exceptions are thrown with invalid arguments.
+		 * Tests no exceptions are thrown with the provided arguments.
 		 */
 		@Test
 		@Order(2)
-		public void testBadArguments() {
+		public void testInvalidFlag() {
+			String[] args = { "-hello", "world" };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 */
+		@Test
+		@Order(3)
+		public void testOnlyValues() {
 			String[] args = { "hello", "world" };
 			testNoExceptions(args, SHORT_TIMEOUT);
 		}
 
 		/**
-		 * Tests no exceptions are thrown with a missing path value.
+		 * Tests no exceptions are thrown with the provided arguments.
 		 */
 		@Test
-		@Order(3)
-		public void testMissingPath() {
+		@Order(4)
+		public void testOnlyText() {
 			String[] args = { "-text" };
 			testNoExceptions(args, SHORT_TIMEOUT);
 		}
 
 		/**
-		 * Tests no exceptions are thrown with an invalid path value.
+		 * Tests no exceptions are thrown with the provided arguments.
 		 */
 		@Test
-		@Order(4)
+		@Order(5)
 		public void testInvalidPath() {
 			// generates a random path name
 			String path = Long.toHexString(Double.doubleToLongBits(Math.random()));
@@ -204,88 +208,58 @@ public class CountTests {
 		}
 
 		/**
-		 * Tests no exceptions are thrown with no count output.
-		 *
-		 * @throws IOException if IO error occurs
-		 */
-		@Test
-		@Order(5)
-		public void testNoOutput() throws IOException {
-			Path output = COUNTS.path;
-			String[] args = { TEXT.flag, HELLO.text };
-
-			// make sure to delete old output file if it exists
-			Files.deleteIfExists(output);
-
-			// make sure a new output file was not created
-			testNoExceptions(args, SHORT_TIMEOUT);
-			Assertions.assertFalse(Files.exists(output));
-		}
-
-		/**
-		 * Tests no exceptions are thrown with a default output value.
+		 * Tests no exceptions are thrown with the provided arguments.
 		 *
 		 * @throws IOException if IO error occurs
 		 */
 		@Test
 		@Order(6)
-		public void testDefaultOutput() throws IOException {
-			String[] args = { TEXT.flag, HELLO.text, COUNTS.flag };
-
-			// make sure to delete old counts.json if it exists
-			Files.deleteIfExists(COUNTS.path);
-
-			// make sure a new counts.json was created
+		public void testNoCounts() throws IOException {
+			Path output = COUNTS.path;
+			String[] args = { TEXT.flag, HELLO.text };
+			Files.deleteIfExists(output);
 			testNoExceptions(args, SHORT_TIMEOUT);
-
-			// generate debug output
-			Supplier<String> debug = () -> {
-				String message = "Make sure to use the default value for this flag.";
-				return errorMessage(args, COUNTS.path, COUNTS.path, message);
-			};
-
-			Assertions.assertTrue(Files.exists(COUNTS.path), debug);
+			Assertions.assertFalse(Files.exists(output));
 		}
 
 		/**
-		 * Tests no exceptions are thrown with only output (no input path).
+		 * Tests no exceptions are thrown with the provided arguments.
 		 *
 		 * @throws IOException if IO error occurs
 		 */
 		@Test
 		@Order(7)
-		public void testEmptyOutput() throws IOException {
-			String[] args = { COUNTS.flag };
-
-			// make sure to delete old counts.json if it exists
+		public void testDefaultCounts() throws IOException {
+			String[] args = { TEXT.flag, HELLO.text, COUNTS.flag };
 			Files.deleteIfExists(COUNTS.path);
-
-			// make sure a new counts.json was created
 			testNoExceptions(args, SHORT_TIMEOUT);
-
-			// generate debug output
-			Supplier<String> debug = () -> {
-				String message = "Make sure to always produce file output if this flag exists.";
-				return errorMessage(args, COUNTS.path, COUNTS.path, message);
-			};
-
-			Assertions.assertTrue(Files.exists(COUNTS.path), debug);
+			Assertions.assertTrue(Files.exists(COUNTS.path));
 		}
 
 		/**
-		 * Tests no exceptions are thrown with arguments in a different order.
+		 * Tests no exceptions are thrown with the provided arguments.
 		 *
 		 * @throws IOException if IO error occurs
 		 */
 		@Test
 		@Order(8)
-		public void testSwitchedOrder() throws IOException {
-			String[] args = { COUNTS.flag, TEXT.flag, HELLO.text };
-
-			// make sure to delete old counts.json if it exists
+		public void testOnlyCounts() throws IOException {
+			String[] args = { COUNTS.flag };
 			Files.deleteIfExists(COUNTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(COUNTS.path));
+		}
 
-			// make sure a new counts.json was created
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws IOException if IO error occurs
+		 */
+		@Test
+		@Order(9)
+		public void testSwitched() throws IOException {
+			String[] args = { COUNTS.flag, TEXT.flag, HELLO.text };
+			Files.deleteIfExists(COUNTS.path);
 			testNoExceptions(args, SHORT_TIMEOUT);
 			Assertions.assertTrue(Files.exists(COUNTS.path));
 		}
@@ -295,10 +269,10 @@ public class CountTests {
 	 * Generates the arguments to use for the output test cases. Designed to be used
 	 * inside a JUnit test.
 	 *
-	 * @param input the input path to use
-	 * @param id the id to use in the output filename
+	 * @param input the input
+	 * @param id the id
 	 */
-	public static void testCountOutput(Path input, String id) {
+	public static void testOutput(Path input, String id) {
 		String filename = String.format("counts-%s.json", id);
 		Path actual = ProjectPath.ACTUAL.resolve(filename);
 		Path expected = ProjectPath.EXPECTED.resolve("counts").resolve(filename);
@@ -313,12 +287,12 @@ public class CountTests {
 	}
 
 	/**
-	 * Calls {@link CountTests#testCountOutput(Path, String)} using the enum.
+	 * Calls {@link BuildCountTests#testOutput(Path, String)} using the enum.
 	 *
-	 * @param path the project path to use
-	 * @see CountTests#testCountOutput(Path, String)
+	 * @param path the path
+	 * @see BuildCountTests#testOutput(Path, String)
 	 */
-	public static void testCountOutput(ProjectPath path) {
-		testCountOutput(path.path, path.id);
+	public static void testOutput(ProjectPath path) {
+		testOutput(path.path, path.id);
 	}
 }
