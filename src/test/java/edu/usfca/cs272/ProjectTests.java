@@ -198,13 +198,13 @@ public interface ProjectTests {
 
 				// Double-check we can read the expected output file
 				if (!Files.isReadable(expected)) {
-					String message = "Unable to read expected output file.";
+					String message = "Unable to read expected output file: " + expected.toString();
 					Assertions.fail(errorMessage(args, actual, expected, message));
 				}
 
 				// Double-check we can read the actual output file
 				if (!Files.isReadable(actual)) {
-					String message = "Unable to read actual output file.";
+					String message = "Unable to read actual output file: " + actual.toString();
 					Assertions.fail(errorMessage(args, actual, expected, message));
 				}
 
@@ -212,7 +212,7 @@ public interface ProjectTests {
 				int count = checkFiles(actual, expected);
 
 				if (count <= 0) {
-					String message = "Difference detected on line: " + -count + ".";
+					String message = "File " + actual.toString() + " differs on line: " + -count + ".";
 					Assertions.fail(errorMessage(args, actual, expected, message));
 				}
 
@@ -298,8 +298,9 @@ public interface ProjectTests {
 			workers.removeIf(name -> name.startsWith("junit")); // remove junit timeout threads
 			workers.removeIf(name -> name.startsWith("ForkJoinPool")); // remove other junit threads
 
-			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\n";
-			Assertions.assertTrue(workers.size() > 0, debug.formatted(before, finish, workers));
+			String message = "Unable to detect any worker threads. Are you 100% positive threads are being created and used in your code? You can debug this by producing log output inside the run method of your thread objects. This is an imperfect test; if you are able to verify threads are being created and used, make a private post on Piazza. The instructor will look into the problem.";
+			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\n\n%s\n";
+			Assertions.assertTrue(workers.size() > 0, debug.formatted(before, finish, workers, message));
 		});
 	}
 
