@@ -356,14 +356,13 @@ public class SearchExactTests {
 		String type = partial ? "partial" : "exact";
 		String filename = String.format("%s-%s-%s.json", type, query, input.id);
 
-		Path actual = ACTUAL.resolve(filename);
+		Path actual = ACTUAL.resolve(filename).normalize();
 		Path expected = EXPECTED.resolve(type).resolve(filename).normalize();
+		Path queries = ProjectPath.QUERY.resolve(query + ".txt").normalize();
 
 		String[] args = {
-				TEXT.flag, input.text,
-				QUERY.flag, ProjectPath.QUERY.resolve(query + ".txt").toString(),
-				RESULTS.flag, actual.toString(),
-				partial ? PARTIAL.flag : ""
+				TEXT.flag, input.text, QUERY.flag, queries.toString(),
+				RESULTS.flag, actual.toString(), partial ? PARTIAL.flag : ""
 		};
 
 		Executable debug = () -> checkOutput(args, actual, expected);
