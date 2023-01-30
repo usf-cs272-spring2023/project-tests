@@ -181,8 +181,8 @@ public class BuildIndexTests {
 			};
 
 			Map<Path, Path> files = Map.of(
-					ACTUAL.resolve(countsName), EXPECTED.resolve("counts").resolve(countsName),
-					ACTUAL.resolve(indexName), EXPECTED.resolve("index").resolve(indexName)
+					countsActual, EXPECTED.resolve("counts").resolve(countsName),
+					indexActual, EXPECTED.resolve("index").resolve(indexName)
 			);
 
 			Executable test = () -> ProjectTests.checkOutput(args, files);
