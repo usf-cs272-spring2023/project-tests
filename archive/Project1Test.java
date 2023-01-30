@@ -5,12 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,18 +23,20 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @author CS 272 Software Development (University of San Francisco)
  * @version Spring 2023
  */
-@TestMethodOrder(MethodName.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class Project1Test extends ProjectTests {
 	/*
 	 * NOTE: Avoid running this entire test suite!
 	 *
 	 * The project tests will always take awhile to run. The remote test will only
 	 * run the tests with the "project1" tag. The other tests are provided to help
-	 * you debug only. Run each test individually in the order they are provided
-	 * in this file while you are developing!
+	 * you debug only. Run each test individually in the order they are provided in
+	 * this file while you are developing!
 	 *
 	 * Utilize the "Outline" view in Eclipse to navigate this file quickly.
 	 */
+
+
 
 	/**
 	 * Tests the output of this project.
@@ -48,10 +51,8 @@ public class Project1Test extends ProjectTests {
 		 */
 		@Order(1)
 		@ParameterizedTest
-		@ValueSource(strings = {
-				"hello.txt", "animals.text", "capitals.txt", "capital_extension.TXT", "digits.tXt", "position.teXt",
-				"empty.txt", "symbols.txt", "words.tExT"
-		})
+		@ValueSource(strings = { "hello.txt", "animals.text", "capitals.txt", "capital_extension.TXT", "digits.tXt",
+				"position.teXt", "empty.txt", "symbols.txt", "words.tExT" })
 		public void testSimpleTextFiles(String filename) {
 			Path input = TEXT_PATH.resolve("simple").resolve(filename);
 			testIndex("index-simple", input);
@@ -66,9 +67,7 @@ public class Project1Test extends ProjectTests {
 		@Tag("test1")
 		@Tag("past2")
 		@ParameterizedTest
-		@ValueSource(strings = {
-				"no_extension", "sentences.md", "double_extension.txt.html", "wrong_extension.html"
-		})
+		@ValueSource(strings = { "no_extension", "sentences.md", "double_extension.txt.html", "wrong_extension.html" })
 		public void testSimpleOtherFiles(String filename) {
 			Path input = TEXT_PATH.resolve("simple").resolve(filename);
 			testIndex("index-simple", input);
@@ -81,9 +80,7 @@ public class Project1Test extends ProjectTests {
 		 */
 		@Order(3)
 		@ParameterizedTest
-		@ValueSource(strings = {
-				"stem-in.txt", "stem-out.txt"
-		})
+		@ValueSource(strings = { "stem-in.txt", "stem-out.txt" })
 		public void testStemsFiles(String filename) {
 			Path input = TEXT_PATH.resolve("stems").resolve(filename);
 			testIndex("index-stems", input);
@@ -96,13 +93,12 @@ public class Project1Test extends ProjectTests {
 		 */
 		@Order(4)
 		@ParameterizedTest
-		@ValueSource(strings = {
-				"rfc3629.txt", // UTF-8, a transformation format of ISO 10646
-				"rfc475.txt",  // FTP AND NETWORK MAIL SYSTEM
+		@ValueSource(strings = { "rfc3629.txt", // UTF-8, a transformation format of ISO 10646
+				"rfc475.txt", // FTP AND NETWORK MAIL SYSTEM
 				"rfc5646.txt", // Tags for Identifying Languages
 				"rfc6805.txt", // PCE Hierarchy Framework
 				"rfc6838.txt", // Media Type Specifications and Registration Procedures
-				"rfc7231.txt"  // Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content
+				"rfc7231.txt" // Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content
 		})
 		public void testRfcFiles(String filename) {
 			Path input = TEXT_PATH.resolve("rfcs").resolve(filename);
@@ -116,14 +112,13 @@ public class Project1Test extends ProjectTests {
 		 */
 		@Order(5)
 		@ParameterizedTest
-		@ValueSource(strings = {
-				"pg37134.txt", // The Elements of Style by William Strunk
+		@ValueSource(strings = { "pg37134.txt", // The Elements of Style by William Strunk
 				"pg22577.txt", // Practical Grammar and Composition by Thomas Wood
-				"pg1661.txt",  // Adventures of Sherlock Holmes by Arthur Conan Doyle
-				"pg1322.txt",  // Leaves of Grass by Walt Whitman
+				"pg1661.txt", // Adventures of Sherlock Holmes by Arthur Conan Doyle
+				"pg1322.txt", // Leaves of Grass by Walt Whitman
 				"50468-0.txt", // ALGOL Compiler by L. L. Bumgarner
-				"2701-0.txt",  // Moby Dick by Herman Melville
-				"1400-0.txt"   // Great Expectations by Charles Dickens
+				"2701-0.txt", // Moby Dick by Herman Melville
+				"1400-0.txt" // Great Expectations by Charles Dickens
 		})
 		public void testGutenFiles(String filename) {
 			Path input = TEXT_PATH.resolve("guten").resolve(filename);
@@ -217,9 +212,7 @@ public class Project1Test extends ProjectTests {
 		@Order(2)
 		@Test
 		public void testBadArguments() {
-			String[] args = {
-					"hello", "world"
-			};
+			String[] args = { "hello", "world" };
 			testNoExceptions(args, SHORT_TIMEOUT);
 		}
 
@@ -229,9 +222,7 @@ public class Project1Test extends ProjectTests {
 		@Order(3)
 		@Test
 		public void testMissingPath() {
-			String[] args = {
-					"-text"
-			};
+			String[] args = { "-text" };
 			testNoExceptions(args, SHORT_TIMEOUT);
 		}
 
@@ -243,9 +234,7 @@ public class Project1Test extends ProjectTests {
 		public void testInvalidPath() {
 			// generates a random path name
 			String path = Long.toHexString(Double.doubleToLongBits(Math.random()));
-			String[] args = {
-					TEXT_FLAG, path
-			};
+			String[] args = { TEXT_FLAG, path };
 			testNoExceptions(args, SHORT_TIMEOUT);
 		}
 
@@ -257,9 +246,7 @@ public class Project1Test extends ProjectTests {
 		@Order(5)
 		@Test
 		public void testNoOutput() throws IOException {
-			String[] args = {
-					TEXT_FLAG, HELLO
-			};
+			String[] args = { TEXT_FLAG, HELLO };
 
 			// make sure to delete old output file if it exists
 			Files.deleteIfExists(INDEX_DEFAULT);
@@ -277,9 +264,7 @@ public class Project1Test extends ProjectTests {
 		@Order(6)
 		@Test
 		public void testDefaultOutput() throws IOException {
-			String[] args = {
-					TEXT_FLAG, HELLO, INDEX_FLAG
-			};
+			String[] args = { TEXT_FLAG, HELLO, INDEX_FLAG };
 
 			// make sure to delete old index.json if it exists
 			Files.deleteIfExists(INDEX_DEFAULT);
@@ -298,9 +283,7 @@ public class Project1Test extends ProjectTests {
 		@Order(7)
 		@Test
 		public void testEmptyOutput() throws IOException {
-			String[] args = {
-					INDEX_FLAG
-			};
+			String[] args = { INDEX_FLAG };
 
 			// make sure to delete old index.json if it exists
 			Files.deleteIfExists(INDEX_DEFAULT);
@@ -319,9 +302,7 @@ public class Project1Test extends ProjectTests {
 		@Order(8)
 		@Test
 		public void testSwitchedOrder() throws IOException {
-			String[] args = {
-					INDEX_FLAG, TEXT_FLAG, HELLO
-			};
+			String[] args = { INDEX_FLAG, TEXT_FLAG, HELLO };
 
 			// make sure to delete old index.json if it exists
 			Files.deleteIfExists(INDEX_DEFAULT);
@@ -340,8 +321,8 @@ public class Project1Test extends ProjectTests {
 	public static final String HELLO = TEXT_PATH.resolve("simple").resolve("hello.txt").toString();
 
 	/**
-	 * Generates the arguments to use for the output test cases. Designed to be
-	 * used inside a JUnit test.
+	 * Generates the arguments to use for the output test cases. Designed to be used
+	 * inside a JUnit test.
 	 *
 	 * @param subdir the output subdirectory to use
 	 * @param input the input path to use
@@ -352,9 +333,7 @@ public class Project1Test extends ProjectTests {
 		Path actual = ACTUAL_PATH.resolve(filename);
 		Path expected = EXPECTED_PATH.resolve("index").resolve(subdir).resolve(filename);
 
-		String[] args = {
-				TEXT_FLAG, input.normalize().toString(), INDEX_FLAG, actual.normalize().toString()
-		};
+		String[] args = { TEXT_FLAG, input.normalize().toString(), INDEX_FLAG, actual.normalize().toString() };
 
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, () -> { checkOutput(args, actual, expected); });
 	}
