@@ -6,10 +6,15 @@ import static edu.usfca.cs272.ProjectFlag.TEXT;
 import static edu.usfca.cs272.ProjectFlag.THREADS;
 import static edu.usfca.cs272.ProjectPath.ACTUAL;
 import static edu.usfca.cs272.ProjectPath.EXPECTED;
+import static edu.usfca.cs272.ProjectPath.HELLO;
 import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
+import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.checkOutput;
+import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -201,7 +206,36 @@ public class ThreadBuildTests {
 			testCount(ProjectPath.TEXT, threads);
 		}
 
-		// TODO testTextIndexCounts
+		/**
+		 * See the JUnit output for test details.
+		 */
+		@Test
+		@Order(4)
+		public void testCountsIndex() {
+			ProjectPath input = ProjectPath.TEXT;
+			Threads threads = Threads.FOUR;
+
+			String indexName = String.format("index-%s", input.id);
+			String countsName = String.format("counts-%s", input.id);
+
+			Path indexActual = ACTUAL.resolve(indexName + "-" + threads.text + ".json");
+			Path countsActual = ACTUAL.resolve(countsName + "-" + threads.text + ".json");
+
+			String[] args = {
+					TEXT.flag, input.text,
+					INDEX.flag, indexActual.toString(),
+					COUNTS.flag, countsActual.toString(),
+					THREADS.flag, threads.text
+			};
+
+			Map<Path, Path> files = Map.of(
+					countsActual, EXPECTED.resolve("counts").resolve(countsName + ".json"),
+					indexActual, EXPECTED.resolve("index").resolve(indexName + ".json")
+			);
+
+			Executable test = () -> ProjectTests.checkOutput(args, files);
+			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
+		}
 
 		/**
 		 * Free up memory after running --- useful for following tests.
@@ -209,6 +243,122 @@ public class ThreadBuildTests {
 		@AfterAll
 		public static void freeMemory() {
 			ProjectTests.freeMemory();
+		}
+	}
+
+	/**
+	 * Tests the index exception handling of this project.
+	 */
+	@Nested
+	@Order(4)
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ExceptionTests {
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(1)
+		public void testNegativeThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "-4", INDEX.flag };
+			Files.deleteIfExists(INDEX.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(2)
+		public void testZeroThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "0", INDEX.flag };
+			Files.deleteIfExists(INDEX.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(3)
+		public void testFractionThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "3.14", INDEX.flag };
+			Files.deleteIfExists(INDEX.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(4)
+		public void testWordThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "fox", INDEX.flag };
+			Files.deleteIfExists(INDEX.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(5)
+		public void testDefaultThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, INDEX.flag };
+			Files.deleteIfExists(INDEX.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(6)
+		public void testNoOutput() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(7)
+		public void testOnlyThreads() throws Exception {
+			String[] args = { THREADS.flag };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(8)
+		public void testOnlyThreadsAndOutput() throws Exception {
+			String[] args = { THREADS.flag, INDEX.flag };
+			Files.deleteIfExists(INDEX.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
 		}
 	}
 
@@ -220,8 +370,8 @@ public class ThreadBuildTests {
 		/** Two threads */
 		TWO(2),
 
-		/** Five threads */
-		FIVE(5);
+		/** Four threads */
+		FOUR(4);
 
 		/** The number of threads as an int. */
 		public final int num;

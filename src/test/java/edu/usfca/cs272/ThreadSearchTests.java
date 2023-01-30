@@ -1,5 +1,7 @@
 package edu.usfca.cs272;
 
+import static edu.usfca.cs272.ProjectFlag.COUNTS;
+import static edu.usfca.cs272.ProjectFlag.INDEX;
 import static edu.usfca.cs272.ProjectFlag.PARTIAL;
 import static edu.usfca.cs272.ProjectFlag.QUERY;
 import static edu.usfca.cs272.ProjectFlag.RESULTS;
@@ -7,10 +9,16 @@ import static edu.usfca.cs272.ProjectFlag.TEXT;
 import static edu.usfca.cs272.ProjectFlag.THREADS;
 import static edu.usfca.cs272.ProjectPath.ACTUAL;
 import static edu.usfca.cs272.ProjectPath.EXPECTED;
+import static edu.usfca.cs272.ProjectPath.HELLO;
+import static edu.usfca.cs272.ProjectPath.QUERY_SIMPLE;
 import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
+import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
 import static edu.usfca.cs272.ProjectTests.checkOutput;
+import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -181,6 +189,46 @@ public class ThreadSearchTests {
 		}
 
 		/**
+		 * See the JUnit output for test details.
+		 */
+		@Test
+		@Order(8)
+		public void testCountsIndexResults() {
+			ProjectPath input = ProjectPath.TEXT;
+			Threads threads = Threads.FOUR;
+
+			String query = "complex";
+			String type = partial ? "partial" : "exact";
+
+			String indexName = String.format("index-%s", input.id);
+			String countsName = String.format("counts-%s", input.id);
+			String resultsName = String.format("%s-%s-%s", type, query, input.id);
+
+			Path indexActual = ACTUAL.resolve(indexName + "-" + threads.text + ".json");
+			Path countsActual = ACTUAL.resolve(countsName + "-" + threads.text + ".json");
+			Path resultsActual = ACTUAL.resolve(resultsName + "-" + threads.text + ".json");
+
+			String[] args = {
+					TEXT.flag, input.text,
+					INDEX.flag, indexActual.toString(),
+					COUNTS.flag, countsActual.toString(),
+					QUERY.flag, ProjectPath.QUERY.resolve(query + ".txt").toString(),
+					partial ? PARTIAL.flag : "",
+					RESULTS.flag, resultsActual.toString(),
+					THREADS.flag, threads.text
+			};
+
+			Map<Path, Path> files = Map.of(
+					countsActual, EXPECTED.resolve("counts").resolve(countsName + ".json"),
+					indexActual, EXPECTED.resolve("index").resolve(indexName + ".json"),
+					resultsActual, EXPECTED.resolve(type).resolve(resultsName + ".json")
+			);
+
+			Executable test = () -> ProjectTests.checkOutput(args, files);
+			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
+		}
+
+		/**
 		 * Free up memory after running --- useful for following tests.
 		 */
 		@AfterAll
@@ -204,6 +252,122 @@ public class ThreadSearchTests {
 		public void setup() {
 			super.partial = true;
 			super.searchFlag = partial ? PARTIAL.flag : "";
+		}
+	}
+
+	/**
+	 * Tests the index exception handling of this project.
+	 */
+	@Nested
+	@Order(4)
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ExceptionTests {
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(1)
+		public void testNegativeThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "-4", QUERY.flag, QUERY_SIMPLE.text, RESULTS.flag };
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(2)
+		public void testZeroThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "0", QUERY.flag, QUERY_SIMPLE.text, RESULTS.flag };
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(3)
+		public void testFractionThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "3.14", QUERY.flag, QUERY_SIMPLE.text, RESULTS.flag };
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(4)
+		public void testWordThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, "fox", QUERY.flag, QUERY_SIMPLE.text, RESULTS.flag };
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(5)
+		public void testDefaultThreads() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, QUERY.flag, QUERY_SIMPLE.text, RESULTS.flag };
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(6)
+		public void testNoOutput() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, THREADS.flag, QUERY.flag, QUERY_SIMPLE.text };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(7)
+		public void testOnlyThreadsAndPartial() throws Exception {
+			String[] args = { THREADS.flag, PARTIAL.flag };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(8)
+		public void testOnlyThreadsAndOutput() throws Exception {
+			String[] args = { THREADS.flag, RESULTS.flag };
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
 		}
 	}
 
