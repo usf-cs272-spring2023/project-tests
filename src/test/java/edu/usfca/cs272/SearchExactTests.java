@@ -192,9 +192,9 @@ public class SearchExactTests {
 			};
 
 			Map<Path, Path> files = Map.of(
-					ACTUAL.resolve(countsName), EXPECTED.resolve("counts").resolve(countsName),
-					ACTUAL.resolve(indexName), EXPECTED.resolve("index").resolve(indexName),
-					ACTUAL.resolve(resultsName), EXPECTED.resolve(type).resolve(resultsName)
+					countsActual, EXPECTED.resolve("counts").resolve(countsName),
+					indexActual, EXPECTED.resolve("index").resolve(indexName),
+					resultsActual, EXPECTED.resolve(type).resolve(resultsName)
 			);
 
 			Executable test = () -> ProjectTests.checkOutput(args, files);
