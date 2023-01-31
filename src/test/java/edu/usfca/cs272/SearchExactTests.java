@@ -26,6 +26,7 @@ import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -68,6 +69,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(1)
+		@Tag("test-v2.0")
 		public void testSimpleSimple() {
 			testOutput(partial, "simple", ProjectPath.SIMPLE);
 		}
@@ -77,6 +79,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(2)
+		@Tag("test-v2.0")
 		public void testStemsWords() {
 			testOutput(partial, "words", ProjectPath.STEMS);
 		}
@@ -86,6 +89,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(3)
+		@Tag("test-v2.0")
 		public void testStemsRespect() {
 			testOutput(partial, "respect", ProjectPath.STEMS);
 		}
@@ -95,6 +99,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(4)
+		@Tag("test-v2.0")
 		public void testStemsLetters() {
 			testOutput(partial, "letters", ProjectPath.STEMS);
 		}
@@ -104,6 +109,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(5)
+		@Tag("test-v2.0")
 		public void testRfcsLetters() {
 			testOutput(partial, "letters", ProjectPath.RFCS);
 		}
@@ -123,6 +129,7 @@ public class SearchExactTests {
 		 */
 		@ParameterizedTest
 		@Order(1)
+		@Tag("test-v2.0")
 		@EnumSource(mode = MATCH_ALL, names = "^GUTEN_.+")
 		public void testGutenFiles(ProjectPath path) {
 			testOutput(partial, "complex", path);
@@ -133,6 +140,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(2)
+		@Tag("test-v2.0")
 		public void testGutenComplex() {
 			testOutput(partial, "complex", ProjectPath.GUTEN);
 		}
@@ -142,6 +150,7 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(3)
+		@Tag("test-v2.0")
 		public void testTextWords() {
 			testOutput(partial, "words", ProjectPath.TEXT);
 		}
@@ -151,6 +160,9 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(4)
+		@Tag("test-v2.0")
+		@Tag("test-v2.1")
+		@Tag("test-v2.x")
 		public void testTextRespect() {
 			testOutput(partial, "respect", ProjectPath.TEXT);
 		}
@@ -160,15 +172,178 @@ public class SearchExactTests {
 		 */
 		@Test
 		@Order(5)
+		@Tag("test-v2.0")
+		@Tag("test-v2.1")
+		@Tag("test-v2.x")
 		public void testTextComplex() {
 			testOutput(partial, "complex", ProjectPath.TEXT);
 		}
+	}
 
+	/**
+	 * Tests the index exception handling of this project.
+	 */
+	@Nested
+	@Order(3)
+	@Tag("test-v2.1")
+	@Tag("test-v2.x")
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ExceptionTests {
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(1)
+		@Tag("test-v2.0")
+		public void testMissingQueryPath() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, searchFlag };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(2)
+		@Tag("test-v2.0")
+		public void testInvalidQueryPath() throws Exception {
+			String query = Long.toHexString(Double.doubleToLongBits(Math.random()));
+			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, query, searchFlag };
+			testNoExceptions(args, SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(3)
+		@Tag("test-v2.0")
+		public void testNoOutput() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, QUERY_SIMPLE.text, searchFlag };
+
+			Files.deleteIfExists(COUNTS.path);
+			Files.deleteIfExists(INDEX.path);
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+
+			Assertions.assertAll(
+					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
+					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
+					() -> Assertions.assertFalse(Files.exists(RESULTS.path), RESULTS.value)
+			);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(4)
+		@Tag("test-v2.0")
+		public void testDefaultResults() throws Exception {
+			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, QUERY_SIMPLE.text, searchFlag, RESULTS.flag };
+
+			Files.deleteIfExists(COUNTS.path);
+			Files.deleteIfExists(INDEX.path);
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+
+			Assertions.assertAll(
+					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
+					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
+					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
+			);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(5)
+		@Tag("test-v2.0")
+		public void testNoText() throws Exception {
+			String[] args = { QUERY.flag, QUERY_SIMPLE.text, searchFlag, RESULTS.flag };
+
+			Files.deleteIfExists(COUNTS.path);
+			Files.deleteIfExists(INDEX.path);
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+
+			Assertions.assertAll(
+					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
+					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
+					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
+			);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(6)
+		@Tag("test-v2.0")
+		public void testOnlyResults() throws Exception {
+			String[] args = { searchFlag, RESULTS.flag };
+
+			Files.deleteIfExists(COUNTS.path);
+			Files.deleteIfExists(INDEX.path);
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+
+			Assertions.assertAll(
+					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
+					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
+					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
+			);
+		}
+
+		/**
+		 * Tests no exceptions are thrown with the provided arguments.
+		 *
+		 * @throws Exception if exception occurs
+		 */
+		@Test
+		@Order(7)
+		@Tag("test-v2.0")
+		public void testSwitched() throws Exception {
+			String[] args = { searchFlag, QUERY.flag, QUERY_SIMPLE.text, TEXT.flag, HELLO.text, RESULTS.flag };
+
+			Files.deleteIfExists(COUNTS.path);
+			Files.deleteIfExists(INDEX.path);
+			Files.deleteIfExists(RESULTS.path);
+			testNoExceptions(args, SHORT_TIMEOUT);
+
+			Assertions.assertAll(
+					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
+					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
+					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
+			);
+		}
+	}
+
+	/**
+	 * All-in-one tests of this project functionality.
+	 */
+	@Nested
+	@Order(4)
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ComboTests {
 		/**
 		 * See the JUnit output for test details.
 		 */
 		@Test
-		@Order(6)
+		@Order(1)
 		public void testCountsIndexResults() {
 			ProjectPath input = ProjectPath.TEXT;
 			String query = "complex";
@@ -199,149 +374,6 @@ public class SearchExactTests {
 
 			Executable test = () -> ProjectTests.checkOutput(args, files);
 			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
-		}
-	}
-
-	/**
-	 * Tests the index exception handling of this project.
-	 */
-	@Nested
-	@Order(3)
-	@TestMethodOrder(OrderAnnotation.class)
-	public class ExceptionTests {
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(1)
-		public void testMissingQueryPath() throws Exception {
-			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, searchFlag };
-			testNoExceptions(args, SHORT_TIMEOUT);
-		}
-
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(2)
-		public void testInvalidQueryPath() throws Exception {
-			String query = Long.toHexString(Double.doubleToLongBits(Math.random()));
-			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, query, searchFlag };
-			testNoExceptions(args, SHORT_TIMEOUT);
-		}
-
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(3)
-		public void testNoOutput() throws Exception {
-			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, QUERY_SIMPLE.text, searchFlag };
-
-			Files.deleteIfExists(COUNTS.path);
-			Files.deleteIfExists(INDEX.path);
-			Files.deleteIfExists(RESULTS.path);
-			testNoExceptions(args, SHORT_TIMEOUT);
-
-			Assertions.assertAll(
-					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
-					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
-					() -> Assertions.assertFalse(Files.exists(RESULTS.path), RESULTS.value)
-			);
-		}
-
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(4)
-		public void testDefaultResults() throws Exception {
-			String[] args = { TEXT.flag, HELLO.text, QUERY.flag, QUERY_SIMPLE.text, searchFlag, RESULTS.flag };
-
-			Files.deleteIfExists(COUNTS.path);
-			Files.deleteIfExists(INDEX.path);
-			Files.deleteIfExists(RESULTS.path);
-			testNoExceptions(args, SHORT_TIMEOUT);
-
-			Assertions.assertAll(
-					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
-					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
-					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
-			);
-		}
-
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(5)
-		public void testNoText() throws Exception {
-			String[] args = { QUERY.flag, QUERY_SIMPLE.text, searchFlag, RESULTS.flag };
-
-			Files.deleteIfExists(COUNTS.path);
-			Files.deleteIfExists(INDEX.path);
-			Files.deleteIfExists(RESULTS.path);
-			testNoExceptions(args, SHORT_TIMEOUT);
-
-			Assertions.assertAll(
-					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
-					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
-					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
-			);
-		}
-
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(6)
-		public void testOnlyResults() throws Exception {
-			String[] args = { searchFlag, RESULTS.flag };
-
-			Files.deleteIfExists(COUNTS.path);
-			Files.deleteIfExists(INDEX.path);
-			Files.deleteIfExists(RESULTS.path);
-			testNoExceptions(args, SHORT_TIMEOUT);
-
-			Assertions.assertAll(
-					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
-					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
-					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
-			);
-		}
-
-		/**
-		 * Tests no exceptions are thrown with the provided arguments.
-		 *
-		 * @throws Exception if exception occurs
-		 */
-		@Test
-		@Order(7)
-		public void testSwitched() throws Exception {
-			String[] args = { searchFlag, QUERY.flag, QUERY_SIMPLE.text, TEXT.flag, HELLO.text, RESULTS.flag };
-
-			Files.deleteIfExists(COUNTS.path);
-			Files.deleteIfExists(INDEX.path);
-			Files.deleteIfExists(RESULTS.path);
-			testNoExceptions(args, SHORT_TIMEOUT);
-
-			Assertions.assertAll(
-					() -> Assertions.assertFalse(Files.exists(INDEX.path), INDEX.value),
-					() -> Assertions.assertFalse(Files.exists(COUNTS.path), COUNTS.value),
-					() -> Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value)
-			);
 		}
 	}
 

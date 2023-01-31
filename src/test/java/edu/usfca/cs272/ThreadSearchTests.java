@@ -27,12 +27,14 @@ import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import edu.usfca.cs272.ThreadBuildTests.Threads;
 
@@ -51,6 +53,7 @@ public class ThreadSearchTests {
 	 */
 	@Nested
 	@Order(1)
+	@Tag("test-v3.1")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ApproachTests {
 		/**
@@ -87,6 +90,7 @@ public class ThreadSearchTests {
 	 */
 	@Nested
 	@Order(2)
+	@Tag("test-v3.1")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExactTests {
 		/** The default search mode for this nested class. */
@@ -189,46 +193,6 @@ public class ThreadSearchTests {
 		}
 
 		/**
-		 * See the JUnit output for test details.
-		 */
-		@Test
-		@Order(8)
-		public void testCountsIndexResults() {
-			ProjectPath input = ProjectPath.TEXT;
-			Threads threads = Threads.FOUR;
-
-			String query = "complex";
-			String type = partial ? "partial" : "exact";
-
-			String indexName = String.format("index-%s", input.id);
-			String countsName = String.format("counts-%s", input.id);
-			String resultsName = String.format("%s-%s-%s", type, query, input.id);
-
-			Path indexActual = ACTUAL.resolve(indexName + "-" + threads.text + ".json");
-			Path countsActual = ACTUAL.resolve(countsName + "-" + threads.text + ".json");
-			Path resultsActual = ACTUAL.resolve(resultsName + "-" + threads.text + ".json");
-
-			String[] args = {
-					TEXT.flag, input.text,
-					INDEX.flag, indexActual.toString(),
-					COUNTS.flag, countsActual.toString(),
-					QUERY.flag, ProjectPath.QUERY.resolve(query + ".txt").toString(),
-					partial ? PARTIAL.flag : "",
-					RESULTS.flag, resultsActual.toString(),
-					THREADS.flag, threads.text
-			};
-
-			Map<Path, Path> files = Map.of(
-					countsActual, EXPECTED.resolve("counts").resolve(countsName + ".json"),
-					indexActual, EXPECTED.resolve("index").resolve(indexName + ".json"),
-					resultsActual, EXPECTED.resolve(type).resolve(resultsName + ".json")
-			);
-
-			Executable test = () -> ProjectTests.checkOutput(args, files);
-			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
-		}
-
-		/**
 		 * Free up memory after running --- useful for following tests.
 		 */
 		@AfterAll
@@ -242,6 +206,7 @@ public class ThreadSearchTests {
 	 */
 	@Nested
 	@Order(3)
+	@Tag("test-v3.1")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class PartialTests extends ExactTests {
 		/**
@@ -260,6 +225,9 @@ public class ThreadSearchTests {
 	 */
 	@Nested
 	@Order(4)
+	@Tag("test-v3.1")
+	@Tag("test-v3.2")
+	@Tag("test-v3.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -368,6 +336,57 @@ public class ThreadSearchTests {
 			Files.deleteIfExists(RESULTS.path);
 			testNoExceptions(args, SHORT_TIMEOUT);
 			Assertions.assertTrue(Files.exists(RESULTS.path), RESULTS.value);
+		}
+	}
+
+	/**
+	 * All-in-one tests of this project functionality.
+	 */
+	@Nested
+	@Order(5)
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ComboTests {
+		/**
+		 * See the JUnit output for test details.
+		 *
+		 * @param partial whether partial or exact search is enabled
+		 */
+		@ParameterizedTest
+		@ValueSource(booleans = { false, true })
+		@Order(1)
+		public void testCountsIndexResults(boolean partial) {
+			ProjectPath input = ProjectPath.TEXT;
+			Threads threads = Threads.FOUR;
+
+			String query = "complex";
+			String type = partial ? "partial" : "exact";
+
+			String indexName = String.format("index-%s", input.id);
+			String countsName = String.format("counts-%s", input.id);
+			String resultsName = String.format("%s-%s-%s", type, query, input.id);
+
+			Path indexActual = ACTUAL.resolve(indexName + "-" + threads.text + ".json");
+			Path countsActual = ACTUAL.resolve(countsName + "-" + threads.text + ".json");
+			Path resultsActual = ACTUAL.resolve(resultsName + "-" + threads.text + ".json");
+
+			String[] args = {
+					TEXT.flag, input.text,
+					INDEX.flag, indexActual.toString(),
+					COUNTS.flag, countsActual.toString(),
+					QUERY.flag, ProjectPath.QUERY.resolve(query + ".txt").toString(),
+					partial ? PARTIAL.flag : "",
+					RESULTS.flag, resultsActual.toString(),
+					THREADS.flag, threads.text
+			};
+
+			Map<Path, Path> files = Map.of(
+					countsActual, EXPECTED.resolve("counts").resolve(countsName + ".json"),
+					indexActual, EXPECTED.resolve("index").resolve(indexName + ".json"),
+					resultsActual, EXPECTED.resolve(type).resolve(resultsName + ".json")
+			);
+
+			Executable test = () -> ProjectTests.checkOutput(args, files);
+			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
 		}
 	}
 

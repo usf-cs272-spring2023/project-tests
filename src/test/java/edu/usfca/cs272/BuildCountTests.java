@@ -36,6 +36,7 @@ public class BuildCountTests {
 	 */
 	@Nested
 	@Order(1)
+	@Tag("test-v1.0")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class FileTests {
 		/**
@@ -52,6 +53,8 @@ public class BuildCountTests {
 		 */
 		@Order(2)
 		@Test
+		@Tag("test-v1.1")
+		@Tag("test-v1.x")
 		public void testSentences() {
 			Path input = ProjectPath.SIMPLE.resolve("sentences.md");
 			String id = ProjectPath.id(input);
@@ -90,9 +93,8 @@ public class BuildCountTests {
 		 */
 		@Order(5)
 		@Test
-		@Tag("test_v1.0")
-		@Tag("test_v1.1")
-		@Tag("test_v1.x")
+		@Tag("test-v1.1")
+		@Tag("test-v1.x")
 		public void testEmpty() {
 			testOutput(ProjectPath.EMPTY);
 		}
@@ -103,6 +105,7 @@ public class BuildCountTests {
 	 */
 	@Nested
 	@Order(2)
+	@Tag("test-v1.0")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class DirectoryTests {
 		/**
@@ -137,6 +140,8 @@ public class BuildCountTests {
 		 */
 		@Order(4)
 		@Test
+		@Tag("test-v1.1")
+		@Tag("test-v1.x")
 		public void testText() {
 			testOutput(ProjectPath.TEXT);
 		}
@@ -147,12 +152,9 @@ public class BuildCountTests {
 	 */
 	@Nested
 	@Order(3)
-	@Tag("test-v1.0") @Tag("test-v1.1") @Tag("test-v1.x")
-	@Tag("past-v1.1") @Tag("past-v1.x")
-	@Tag("past-v2.0") @Tag("past-v2.1") @Tag("past-v2.x")
-	@Tag("past-v3.0") @Tag("past-v3.1") @Tag("past-v3.x")
-	@Tag("past-v4.0") @Tag("past-v4.1") @Tag("past-v4.x")
-	@Tag("past-v5.0")
+	@Tag("test-v1.0")
+	@Tag("test-v1.1")
+	@Tag("test-v1.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -276,7 +278,7 @@ public class BuildCountTests {
 		String filename = String.format("counts-%s.json", id);
 		Path actual = ProjectPath.ACTUAL.resolve(filename).normalize();
 		Path expected = ProjectPath.EXPECTED.resolve("counts").resolve(filename).normalize();
-		String[] args = { ProjectFlag.TEXT.flag, input.toString(), ProjectFlag.COUNTS.flag, actual.toString() };
+		String[] args = { TEXT.flag, input.toString(), COUNTS.flag, actual.toString() };
 		Executable debug = () -> checkOutput(args, actual, expected);
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, debug);
 	}

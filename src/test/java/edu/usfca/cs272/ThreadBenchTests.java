@@ -21,6 +21,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -47,6 +48,9 @@ public class ThreadBenchTests {
 		 */
 		@RepeatedTest(3)
 		@Order(1)
+		@Tag("test-v3.1")
+		@Tag("test-v3.2")
+		@Tag("test-v3.x")
 		public void testCount() {
 			new ThreadBuildTests().new ComplexTests().testTextCounts(BENCH_THREADS);
 		}
@@ -56,6 +60,9 @@ public class ThreadBenchTests {
 		 */
 		@RepeatedTest(3)
 		@Order(2)
+		@Tag("test-v3.1")
+		@Tag("test-v3.2")
+		@Tag("test-v3.x")
 		public void testIndex() {
 			new ThreadBuildTests().new ComplexTests().testTextIndex(BENCH_THREADS);
 		}
@@ -65,6 +72,8 @@ public class ThreadBenchTests {
 		 */
 		@RepeatedTest(3)
 		@Order(3)
+		@Tag("test-v3.2")
+		@Tag("test-v3.x")
 		public void testExact() {
 			new ThreadSearchTests().new ExactTests().testTextComplex(BENCH_THREADS);
 		}
@@ -74,6 +83,8 @@ public class ThreadBenchTests {
 		 */
 		@RepeatedTest(3)
 		@Order(4)
+		@Tag("test-v3.2")
+		@Tag("test-v3.x")
 		public void testPartial() {
 			new ThreadSearchTests().new PartialTests().testTextComplex(BENCH_THREADS);
 		}
@@ -104,6 +115,7 @@ public class ThreadBenchTests {
 		 */
 		@Test
 		@Order(1)
+		@Tag("test-v3.1")
 		public void testIndexOneMany() {
 			String[] args1 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, String.valueOf(1) };
 			String[] args2 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, BENCH_THREADS.text };
@@ -125,6 +137,7 @@ public class ThreadBenchTests {
 		 */
 		@Test
 		@Order(2)
+		@Tag("test-v3.1")
 		public void testIndexSingleMulti() {
 			String[] args1 = { TEXT.flag, ProjectPath.TEXT.text };
 			String[] args2 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, BENCH_THREADS.text };
@@ -147,6 +160,7 @@ public class ThreadBenchTests {
 		 */
 		@Test
 		@Order(3)
+		@Tag("test-v3.1")
 		public void testSearchOneMany() {
 			String[] args1 = {
 					TEXT.flag, ProjectPath.TEXT.text, QUERY.flag, QUERY_COMPLEX.text,
@@ -175,6 +189,7 @@ public class ThreadBenchTests {
 		 */
 		@Test
 		@Order(4)
+		@Tag("test-v3.1")
 		public void testSearchSingleMulti() {
 			String[] args1 = { TEXT.flag, ProjectPath.TEXT.text, QUERY.flag, QUERY_COMPLEX.text, PARTIAL.flag };
 
@@ -203,6 +218,7 @@ public class ThreadBenchTests {
 	 */
 	@Nested
 	@Order(3)
+	@Tag("test-v3.2")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class GoodRuntimeTests extends SlowRuntimeTests {
 		/**
@@ -213,6 +229,34 @@ public class ThreadBenchTests {
 		public void setup() {
 			super.target = ProjectBenchmarks.GOOD_SPEEDUP;
 		}
+
+		@Test
+		@Order(1)
+		@Override
+		public void testIndexOneMany() {
+			super.testIndexOneMany();
+		}
+
+		@Test
+		@Order(2)
+		@Override
+		public void testIndexSingleMulti() {
+			super.testIndexSingleMulti();
+		}
+
+		@Test
+		@Order(3)
+		@Override
+		public void testSearchOneMany() {
+			super.testSearchOneMany();
+		}
+
+		@Test
+		@Order(4)
+		@Override
+		public void testSearchSingleMulti() {
+			super.testSearchSingleMulti();
+		}
 	}
 
 	/**
@@ -222,6 +266,7 @@ public class ThreadBenchTests {
 	 */
 	@Nested
 	@Order(4)
+	@Tag("test-v3.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class FastRuntimeTests extends SlowRuntimeTests {
 		/**
@@ -231,6 +276,35 @@ public class ThreadBenchTests {
 		@BeforeEach
 		public void setup() {
 			super.target = ProjectBenchmarks.FAST_SPEEDUP;
+		}
+
+
+		@Test
+		@Order(1)
+		@Override
+		public void testIndexOneMany() {
+			super.testIndexOneMany();
+		}
+
+		@Test
+		@Order(2)
+		@Override
+		public void testIndexSingleMulti() {
+			super.testIndexSingleMulti();
+		}
+
+		@Test
+		@Order(3)
+		@Override
+		public void testSearchOneMany() {
+			super.testSearchOneMany();
+		}
+
+		@Test
+		@Order(4)
+		@Override
+		public void testSearchSingleMulti() {
+			super.testSearchSingleMulti();
 		}
 	}
 

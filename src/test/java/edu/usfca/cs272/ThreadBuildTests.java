@@ -22,6 +22,7 @@ import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -44,6 +45,7 @@ public class ThreadBuildTests {
 	 */
 	@Nested
 	@Order(1)
+	@Tag("test-v3.0")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ApproachTests {
 		/**
@@ -80,6 +82,7 @@ public class ThreadBuildTests {
 	 */
 	@Nested
 	@Order(2)
+	@Tag("test-v3.0")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class InitialTests {
 		/**
@@ -168,6 +171,7 @@ public class ThreadBuildTests {
 	 */
 	@Nested
 	@Order(3)
+	@Tag("test-v3.0")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComplexTests {
 		/**
@@ -207,37 +211,6 @@ public class ThreadBuildTests {
 		}
 
 		/**
-		 * See the JUnit output for test details.
-		 */
-		@Test
-		@Order(4)
-		public void testCountsIndex() {
-			ProjectPath input = ProjectPath.TEXT;
-			Threads threads = Threads.FOUR;
-
-			String indexName = String.format("index-%s", input.id);
-			String countsName = String.format("counts-%s", input.id);
-
-			Path indexActual = ACTUAL.resolve(indexName + "-" + threads.text + ".json");
-			Path countsActual = ACTUAL.resolve(countsName + "-" + threads.text + ".json");
-
-			String[] args = {
-					TEXT.flag, input.text,
-					INDEX.flag, indexActual.toString(),
-					COUNTS.flag, countsActual.toString(),
-					THREADS.flag, threads.text
-			};
-
-			Map<Path, Path> files = Map.of(
-					countsActual, EXPECTED.resolve("counts").resolve(countsName + ".json"),
-					indexActual, EXPECTED.resolve("index").resolve(indexName + ".json")
-			);
-
-			Executable test = () -> ProjectTests.checkOutput(args, files);
-			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
-		}
-
-		/**
 		 * Free up memory after running --- useful for following tests.
 		 */
 		@AfterAll
@@ -251,6 +224,10 @@ public class ThreadBuildTests {
 	 */
 	@Nested
 	@Order(4)
+	@Tag("test-v3.0")
+	@Tag("test-v3.1")
+	@Tag("test-v3.2")
+	@Tag("test-v3.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -359,6 +336,45 @@ public class ThreadBuildTests {
 			Files.deleteIfExists(INDEX.path);
 			testNoExceptions(args, SHORT_TIMEOUT);
 			Assertions.assertTrue(Files.exists(INDEX.path), INDEX.value);
+		}
+	}
+
+	/**
+	 * All-in-one tests of this project functionality.
+	 */
+	@Nested
+	@Order(5)
+	@TestMethodOrder(OrderAnnotation.class)
+	public class ComboTests {
+		/**
+		 * See the JUnit output for test details.
+		 */
+		@Test
+		@Order(1)
+		public void testCountsIndex() {
+			ProjectPath input = ProjectPath.TEXT;
+			Threads threads = Threads.FOUR;
+
+			String indexName = String.format("index-%s", input.id);
+			String countsName = String.format("counts-%s", input.id);
+
+			Path indexActual = ACTUAL.resolve(indexName + "-" + threads.text + ".json");
+			Path countsActual = ACTUAL.resolve(countsName + "-" + threads.text + ".json");
+
+			String[] args = {
+					TEXT.flag, input.text,
+					INDEX.flag, indexActual.toString(),
+					COUNTS.flag, countsActual.toString(),
+					THREADS.flag, threads.text
+			};
+
+			Map<Path, Path> files = Map.of(
+					countsActual, EXPECTED.resolve("counts").resolve(countsName + ".json"),
+					indexActual, EXPECTED.resolve("index").resolve(indexName + ".json")
+			);
+
+			Executable test = () -> ProjectTests.checkOutput(args, files);
+			Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, test);
 		}
 	}
 

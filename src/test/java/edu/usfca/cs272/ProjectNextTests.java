@@ -66,7 +66,7 @@ public class ProjectNextTests {
 	/**
 	 * Tests that next project functionality is not present.
 	 *
-	 * @throws IOException if an IO error occurs
+	 * @throws Exception if an error occurs
 	 */
 	@Test
 	@Tag("next-v1.0")
@@ -75,7 +75,7 @@ public class ProjectNextTests {
 	@Tag("next-v2.0")
 	@Tag("next-v2.1")
 	@Tag("next-v2.x")
-	public void testThreadBuild() throws IOException {
+	public void testThread() throws Exception {
 		String[] args = { TEXT.flag, GUTEN.text, THREADS.flag, "2" };
 
 		try {
@@ -89,5 +89,24 @@ public class ProjectNextTests {
 
 		// should return before here
 		fail(debug);
+	}
+
+	/**
+	 * Tests that next project functionality is not present.
+	 *
+	 * @throws Exception if an error occurs
+	 */
+	@Test
+	@Tag("next-v1.0")
+	@Tag("next-v1.1")
+	@Tag("next-v1.x")
+	@Tag("next-v2.0")
+	@Tag("next-v2.1")
+	@Tag("next-v2.x")
+	@Tag("next-v3.0")
+	@Tag("next-v3.1")
+	@Tag("next-v3.x")
+	public void testHtml() throws Exception {
+		// TODO
 	}
 }
