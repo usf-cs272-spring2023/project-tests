@@ -124,6 +124,8 @@ public class SearchPartialTests extends SearchExactTests {
 	@Order(3)
 	@Tag("test-v2.1")
 	@Tag("test-v2.x")
+	@Tag("past-v3")
+	@Tag("past-v4")
 	public class ExceptionTests extends SearchExactTests.ExceptionTests {
 		@Test
 		@Order(1)
@@ -180,6 +182,8 @@ public class SearchPartialTests extends SearchExactTests {
 	 */
 	@Nested
 	@Order(4)
+	@Tag("past-v3")
+	@Tag("past-v4")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComboTests extends SearchExactTests.ComboTests {
 

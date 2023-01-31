@@ -267,6 +267,7 @@ public class ThreadBenchTests {
 	@Nested
 	@Order(4)
 	@Tag("test-v3.x")
+	@Tag("past-v4")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class FastRuntimeTests extends SlowRuntimeTests {
 		/**

@@ -344,6 +344,7 @@ public class ThreadSearchTests {
 	 */
 	@Nested
 	@Order(5)
+	@Tag("past-v4")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComboTests {
 		/**
