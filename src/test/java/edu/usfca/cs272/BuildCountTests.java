@@ -37,6 +37,11 @@ public class BuildCountTests {
 	@Tag("hello")
 	public void test() {
 		System.out.println("hello world");
+
+		Path hello = Path.of("input", "text", "simple", "hello.txt");
+		String id = "simple-hello";
+		testOutput(hello, id);
+
 	}
 
 	/**
