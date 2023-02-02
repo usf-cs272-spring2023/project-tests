@@ -31,19 +31,6 @@ import org.junit.jupiter.api.function.Executable;
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class BuildCountTests {
-
-	/** Testing */
-	@Test
-	@Tag("hello")
-	public void test() {
-		System.out.println("hello world");
-
-		Path hello = Path.of("input", "text", "simple", "hello.txt");
-		String id = "simple-hello";
-		testOutput(hello, id);
-
-	}
-
 	/**
 	 * Tests the output of this project.
 	 */
