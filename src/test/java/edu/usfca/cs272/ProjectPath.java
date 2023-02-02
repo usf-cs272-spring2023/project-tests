@@ -146,13 +146,13 @@ public enum ProjectPath {
 		}
 
 		String[] parts = path.getFileName().toString().split("\\.");
+		Path parent = path.getParent();
 
-		if (path.getParent() == null) {
-			System.out.println("Null Parent: " + path);
+		if (parent == null) {
 			return parts[0];
 		}
 
-		String subdir = path.getParent().getFileName().toString();
+		String subdir = parent.getFileName().toString();
 		return subdir + "-" + parts[0];
 	}
 }
