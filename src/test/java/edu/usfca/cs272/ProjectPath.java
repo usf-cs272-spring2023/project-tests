@@ -1,5 +1,6 @@
 package edu.usfca.cs272;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -11,8 +12,7 @@ public enum ProjectPath {
 	ACTUAL("actual"),
 
 	/** Path to the expected output files (based on type of slash) */
-	// EXPECTED(File.separator.equals("/") ? "expected-nix" : "expected-win"),
-	EXPECTED("expected-nix"),
+	EXPECTED(File.separator.equals("/") ? "expected-nix" : "expected-win"),
 
 	/** Path to the input files */
 	INPUT("input"),
@@ -146,6 +146,12 @@ public enum ProjectPath {
 		}
 
 		String[] parts = path.getFileName().toString().split("\\.");
+
+		if (path.getParent() == null) {
+			System.out.println("Null Parent: " + path);
+			return parts[0];
+		}
+
 		String subdir = path.getParent().getFileName().toString();
 		return subdir + "-" + parts[0];
 	}
