@@ -31,6 +31,14 @@ import org.junit.jupiter.api.function.Executable;
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class BuildCountTests {
+
+	/** Testing */
+	@Test
+	@Tag("hello")
+	public void test() {
+		System.out.println("hello world");
+	}
+
 	/**
 	 * Tests the output of this project.
 	 */
@@ -45,7 +53,6 @@ public class BuildCountTests {
 		@Order(1)
 		@Test
 		public void testHello() {
-
 			testOutput(ProjectPath.HELLO);
 		}
 
