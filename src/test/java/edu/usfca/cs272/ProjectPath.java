@@ -1,6 +1,5 @@
 package edu.usfca.cs272;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -12,7 +11,8 @@ public enum ProjectPath {
 	ACTUAL("actual"),
 
 	/** Path to the expected output files (based on type of slash) */
-	EXPECTED(File.separator.equals("/") ? "expected-nix" : "expected-win"),
+	// EXPECTED(File.separator.equals("/") ? "expected-nix" : "expected-win"),
+	EXPECTED("expected-nix"),
 
 	/** Path to the input files */
 	INPUT("input"),

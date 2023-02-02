@@ -45,6 +45,7 @@ public class BuildCountTests {
 		@Order(1)
 		@Test
 		public void testHello() {
+
 			testOutput(ProjectPath.HELLO);
 		}
 
