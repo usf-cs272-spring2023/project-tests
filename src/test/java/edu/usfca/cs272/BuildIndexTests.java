@@ -6,10 +6,6 @@ import static edu.usfca.cs272.ProjectFlag.TEXT;
 import static edu.usfca.cs272.ProjectPath.ACTUAL;
 import static edu.usfca.cs272.ProjectPath.EXPECTED;
 import static edu.usfca.cs272.ProjectPath.HELLO;
-import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.checkOutput;
-import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 import static org.junit.jupiter.params.provider.EnumSource.Mode.MATCH_ALL;
 
 import java.io.IOException;
@@ -38,7 +34,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @version Spring 2023
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class BuildIndexTests {
+public class BuildIndexTests extends ProjectTests {
 	/**
 	 * Tests the output of this project.
 	 */

@@ -3,10 +3,6 @@ package edu.usfca.cs272;
 import static edu.usfca.cs272.ProjectFlag.COUNTS;
 import static edu.usfca.cs272.ProjectFlag.TEXT;
 import static edu.usfca.cs272.ProjectPath.HELLO;
-import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.checkOutput;
-import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +26,7 @@ import org.junit.jupiter.api.function.Executable;
  * @version Spring 2023
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class BuildCountTests {
+public class BuildCountTests extends ProjectTests {
 	/**
 	 * Tests the output of this project.
 	 */

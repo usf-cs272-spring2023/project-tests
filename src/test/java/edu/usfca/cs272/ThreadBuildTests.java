@@ -7,10 +7,6 @@ import static edu.usfca.cs272.ProjectFlag.THREADS;
 import static edu.usfca.cs272.ProjectPath.ACTUAL;
 import static edu.usfca.cs272.ProjectPath.EXPECTED;
 import static edu.usfca.cs272.ProjectPath.HELLO;
-import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.checkOutput;
-import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +33,7 @@ import org.junit.jupiter.params.provider.EnumSource;
  * @version Spring 2023
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class ThreadBuildTests {
+public class ThreadBuildTests extends ProjectTests {
 	/**
 	 * Tests that threads are being used for this project. These tests are slow and
 	 * should only be run when needed. The tests are also imperfect and may not

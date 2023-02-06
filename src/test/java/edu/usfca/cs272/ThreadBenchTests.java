@@ -1,15 +1,10 @@
 package edu.usfca.cs272;
 
-import static edu.usfca.cs272.ProjectBenchmarks.BENCH_THREADS;
-import static edu.usfca.cs272.ProjectBenchmarks.compare;
 import static edu.usfca.cs272.ProjectFlag.PARTIAL;
 import static edu.usfca.cs272.ProjectFlag.QUERY;
 import static edu.usfca.cs272.ProjectFlag.TEXT;
 import static edu.usfca.cs272.ProjectFlag.THREADS;
 import static edu.usfca.cs272.ProjectPath.QUERY_COMPLEX;
-import static edu.usfca.cs272.ProjectTests.LONG_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.SHORT_TIMEOUT;
-import static edu.usfca.cs272.ProjectTests.testNoExceptions;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,7 +28,7 @@ import org.junit.jupiter.api.TestMethodOrder;
  * @version Spring 2023
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class ThreadBenchTests {
+public class ThreadBenchTests extends ProjectBenchmarks {
 	/**
 	 * Tests the output consistency of this project.
 	 *
