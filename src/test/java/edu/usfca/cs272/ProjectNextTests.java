@@ -105,6 +105,7 @@ public class ProjectNextTests {
 	@Tag("next-v2.x")
 	@Tag("next-v3.0")
 	@Tag("next-v3.1")
+	@Tag("next-v3.2")
 	@Tag("next-v3.x")
 	public void testHtml() throws Exception {
 		// TODO
