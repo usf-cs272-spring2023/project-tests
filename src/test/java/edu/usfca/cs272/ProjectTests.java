@@ -319,7 +319,7 @@ public class ProjectTests {
 					instructor will look into the problem.
 					""";
 			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\nPaused: %d milliseconds\n\n%s\n";
-			Assertions.assertFalse(workers.size() > 0, () -> debug.formatted(before, finish, workers, pause, message));
+			Assertions.assertTrue(workers.size() > 0, () -> debug.formatted(before, finish, workers, pause, message));
 		});
 	}
 
