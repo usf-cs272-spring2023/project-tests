@@ -265,16 +265,22 @@ public class ProjectTests {
 	 */
 	public static void testMultithreaded(Runnable action) {
 		// time running Driver without any file output
-		Instant start = Instant.now();
+		long[] times = new long[2];
+
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
+			Instant start = Instant.now();
+
 			Driver.main(new String[]{
 					ProjectFlag.TEXT.flag, ProjectPath.TEXT.text,
 					ProjectFlag.THREADS.flag, Threads.TWO.text });
+
+			times[1] = Duration.between(start, Instant.now()).toMillis();
+			times[0] = start.toEpochMilli();
 		});
-		Duration elapsed = Duration.between(start, Instant.now());
 
 		// get how long to pause when checking for multithreading
-		long pause = Math.max(100, elapsed.toMillis() / 2);
+		long elapsed = times[1];
+		long pause = Math.max(100, elapsed / 3);
 
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
 			// get the non-worker threads that are running this test code
@@ -285,8 +291,6 @@ public class ProjectTests {
 			driver.setPriority(Thread.MAX_PRIORITY);
 			driver.start();
 
-			System.out.println(activeThreads());
-
 			// pause this thread for a bit (this is where things can go wrong)
 			// this gives Driver a chance to start up its worker threads
 			Thread.sleep(pause);
@@ -296,7 +300,7 @@ public class ProjectTests {
 
 			// check that driver is still alive
 			String error = "Something went wrong with the test code; see instructor. Elapsed: %d, Pause: %d";
-			Assertions.assertTrue(driver.isAlive(), error.formatted(elapsed.toMillis(), pause));
+			Assertions.assertTrue(driver.isAlive(), error.formatted(elapsed, pause));
 
 			// wait for Driver to finish up
 			driver.join();
