@@ -31,6 +31,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
 
+import edu.usfca.cs272.ThreadBuildTests.Threads;
+
 /**
  * Utility methods used by other JUnit test classes.
  *
@@ -262,13 +264,17 @@ public class ProjectTests {
 	 * @param action the action to run
 	 */
 	public static void testMultithreaded(Runnable action) {
-		// time the action run
+		// time running Driver without any file output
 		Instant start = Instant.now();
-		action.run();
+		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
+			Driver.main(new String[]{
+					ProjectFlag.TEXT.flag, ProjectPath.TEXT.text,
+					ProjectFlag.THREADS.flag, Threads.TWO.text });
+		});
 		Duration elapsed = Duration.between(start, Instant.now());
 
 		// get how long to pause when checking for multithreading
-		Duration pause = elapsed.dividedBy(3);
+		long pause = Math.max(100, elapsed.toMillis() / 2);
 
 		Assertions.assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
 			// get the non-worker threads that are running this test code
@@ -279,14 +285,18 @@ public class ProjectTests {
 			driver.setPriority(Thread.MAX_PRIORITY);
 			driver.start();
 
+			System.out.println(activeThreads());
+
 			// pause this thread for a bit (this is where things can go wrong)
 			// this gives Driver a chance to start up its worker threads
-			Thread.sleep(pause.toMillis());
+			Thread.sleep(pause);
 
 			// get the threads (ideally Driver should be up and running by this point)
-			String error = "Something went wrong with the test code; see instructor. Elapsed: %d, Pause: %d";
-			Assertions.assertTrue(driver.isAlive(), error.formatted(elapsed.toMillis(), pause.toMillis()));
 			List<String> finish = activeThreads();
+
+			// check that driver is still alive
+			String error = "Something went wrong with the test code; see instructor. Elapsed: %d, Pause: %d";
+			Assertions.assertTrue(driver.isAlive(), error.formatted(elapsed.toMillis(), pause));
 
 			// wait for Driver to finish up
 			driver.join();
@@ -308,8 +318,8 @@ public class ProjectTests {
 					being created and used, make a private post on Piazza. The
 					instructor will look into the problem.
 					""";
-			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\n\n%s\n";
-			Assertions.assertTrue(workers.size() > 0, debug.formatted(before, finish, workers, message));
+			String debug = "\nThreads Before: %s\nThreads After: %s\nWorker Threads: %s\nPaused: %d milliseconds\n\n%s\n";
+			Assertions.assertFalse(workers.size() > 0, () -> debug.formatted(before, finish, workers, pause, message));
 		});
 	}
 
