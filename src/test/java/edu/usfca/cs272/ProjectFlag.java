@@ -22,7 +22,7 @@ public enum ProjectFlag {
 	THREADS("-threads", "5"),
 
 	/** Flag to set the maximum number of URLs to process as HTML */
-	MAX("-max", "1"),
+	MAX("-crawl", "1"),
 
 	/** Flag to indicate whether to launch a web server on the specified port */
 	SERVER("-server", "8080"),
