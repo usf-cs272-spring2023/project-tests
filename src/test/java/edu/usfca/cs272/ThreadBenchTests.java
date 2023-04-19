@@ -263,6 +263,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 	@Order(4)
 	@Tag("test-v3.x")
 	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class FastRuntimeTests extends SlowRuntimeTests {
 		/**
@@ -273,7 +274,6 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		public void setup() {
 			super.target = ProjectBenchmarks.FAST_SPEEDUP;
 		}
-
 
 		@Test
 		@Order(1)

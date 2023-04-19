@@ -224,6 +224,8 @@ public class ThreadSearchTests extends ProjectTests {
 	@Tag("test-v3.1")
 	@Tag("test-v3.2")
 	@Tag("test-v3.x")
+	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -341,6 +343,7 @@ public class ThreadSearchTests extends ProjectTests {
 	@Nested
 	@Order(5)
 	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComboTests {
 		/**

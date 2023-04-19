@@ -224,6 +224,8 @@ public class ThreadBuildTests extends ProjectTests {
 	@Tag("test-v3.1")
 	@Tag("test-v3.2")
 	@Tag("test-v3.x")
+	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -341,6 +343,8 @@ public class ThreadBuildTests extends ProjectTests {
 	@Nested
 	@Order(5)
 	@TestMethodOrder(OrderAnnotation.class)
+	@Tag("past-v4")
+	@Tag("past-v5")
 	public class ComboTests {
 		/**
 		 * See the JUnit output for test details.

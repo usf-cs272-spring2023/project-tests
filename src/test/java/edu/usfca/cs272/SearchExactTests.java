@@ -185,6 +185,7 @@ public class SearchExactTests extends ProjectTests {
 	@Tag("test-v2.x")
 	@Tag("past-v3")
 	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -337,6 +338,7 @@ public class SearchExactTests extends ProjectTests {
 	@Order(4)
 	@Tag("past-v3")
 	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComboTests {
 		/**
