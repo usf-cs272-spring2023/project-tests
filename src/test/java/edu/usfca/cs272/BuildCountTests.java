@@ -154,6 +154,7 @@ public class BuildCountTests extends ProjectTests {
 	@Tag("past-v2")
 	@Tag("past-v3")
 	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**

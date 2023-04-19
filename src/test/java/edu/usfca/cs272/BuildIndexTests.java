@@ -173,6 +173,7 @@ public class BuildIndexTests extends ProjectTests {
 	@Tag("past-v2")
 	@Tag("past-v3")
 	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
@@ -265,6 +266,9 @@ public class BuildIndexTests extends ProjectTests {
 	@Nested
 	@Order(4)
 	@Tag("past-v2")
+	@Tag("past-v3")
+	@Tag("past-v4")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComboTests {
 		/**
