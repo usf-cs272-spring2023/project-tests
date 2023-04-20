@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
+import org.opentest4j.MultipleFailuresError;
 
 /**
  * Tests that next project code is not in the current project. This class should
@@ -126,7 +127,7 @@ public class ProjectNextTests {
 			// should fail and throw an error
 			ProjectTests.checkAllOutput(args, Map.of(actual, expected));
 		}
-		catch (AssertionFailedError e) {
+		catch (AssertionFailedError | MultipleFailuresError e) {
 			Assertions.assertNotNull(e);
 			return;
 		}
