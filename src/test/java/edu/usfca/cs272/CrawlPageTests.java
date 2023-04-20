@@ -5,22 +5,25 @@ import static edu.usfca.cs272.ProjectPath.EXPECTED;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * A test suite for project v4.0.
@@ -51,6 +54,8 @@ public class CrawlPageTests extends ProjectTests {
 	 */
 	@Nested
 	@Order(1)
+	@Tag("test-v4.0")
+	@Tag("test-v4.1")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class InitialTests {
 		/**
@@ -141,6 +146,7 @@ public class CrawlPageTests extends ProjectTests {
 		@Order(2)
 		@ParameterizedTest(name = "{index} {2}")
 		@Tag("test-v4.0")
+		@Tag("test-v4.1")
 		@CsvSource({
 			"rfcs, rfc7231, input/rfcs/rfc7231.html"
 		})
@@ -181,6 +187,7 @@ public class CrawlPageTests extends ProjectTests {
 		@Order(4)
 		@ParameterizedTest(name = "{index} {2}")
 		@Tag("test-v4.0")
+		@Tag("test-v4.1")
 		@CsvSource({
 			"guten, guten-2701, input/guten/2701-h/2701-h.htm"
 		})
@@ -221,6 +228,7 @@ public class CrawlPageTests extends ProjectTests {
 		@Order(6)
 		@ParameterizedTest(name = "{index} {2}")
 		@Tag("test-v4.0")
+		@Tag("test-v4.1")
 		@CsvSource({
 			"java, allclasses, docs/api/allclasses-index.html"
 		})
@@ -310,7 +318,9 @@ public class CrawlPageTests extends ProjectTests {
 		@CsvSource({
 			"special, redirect-1, https://www.cs.usfca.edu/~cs272/redirect/one",
 			"special, redirect-2, https://www.cs.usfca.edu/~cs272/redirect/two",
-			"special, redirect-3, https://www.cs.usfca.edu/~cs272/redirect/three"
+			"special, redirect-3, https://www.cs.usfca.edu/~cs272/redirect/three",
+			"special, http-usfcs, http://www.cs.usfca.edu/~cs272/simple/hello.html",
+			"special, http-hello, input/simple/hello.html"
 		})
 		public void testRedirect(String subdir, String id, String seed) throws MalformedURLException {
 			testIndex(seed, subdir, id);
@@ -333,6 +343,27 @@ public class CrawlPageTests extends ProjectTests {
 		public void testFailedRedirect(String subdir, String id, String seed) throws MalformedURLException {
 			testIndex(seed, subdir, id);
 		}
+
+		/**
+		 * Tests crawl AND text output.
+		 *
+		 * @throws MalformedURLException if unable to create seed url
+		 */
+		@Order(6)
+		@Test
+		public void testMixedInput() throws MalformedURLException {
+			URL url = new URL(new URL(GITHUB), "input/simple/hello.html");
+
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX, ProjectFlag.RESULTS);
+			Map<ProjectFlag, String> input = new LinkedHashMap<>();
+
+			input.put(ProjectFlag.HTML, url.toString());
+			input.put(ProjectFlag.TEXT, ProjectPath.HELLO.text);
+			input.put(ProjectFlag.QUERY, ProjectPath.QUERY_SIMPLE.text);
+			input.put(ProjectFlag.PARTIAL, null);
+
+			testCrawl(url.toString(), "special", "mixed", input, output);
+		}
 	}
 
 	/**
@@ -346,7 +377,126 @@ public class CrawlPageTests extends ProjectTests {
 	@Tag("test-v5.0")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
-		// TODO
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
+		@Order(1)
+		public void testMissingSeed() throws Exception {
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.HTML, null);
+			config.put(ProjectFlag.COUNTS, null);
+
+			testNoExceptions(args(config), SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(ProjectFlag.COUNTS.path), ProjectFlag.COUNTS.value);
+		}
+
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @param seed the seed URL to use
+		 * @throws Exception if an error occurs
+		 */
+		@ParameterizedTest
+		@Order(2)
+		@ValueSource(strings = {
+				"mailto:sjengle@cs.usfca.edu",
+				"javascript:alert('Hello!')"
+		})
+		public void testInvalidURL(String seed) throws Exception {
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.HTML, seed);
+			config.put(ProjectFlag.COUNTS, null);
+
+			testNoExceptions(args(config), SHORT_TIMEOUT);
+			Assertions.assertTrue(Files.exists(ProjectFlag.COUNTS.path), ProjectFlag.COUNTS.value);
+		}
+
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
+		@Order(3)
+		public void testThreads() throws Exception {
+			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
+			Map<ProjectFlag, String> input = new LinkedHashMap<>();
+			input.put(ProjectFlag.THREADS, Integer.toString(2));
+			testCrawl("input/simple/hello.html", "simple", "hello", input, output);
+		}
+
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
+		@Order(4)
+		public void testInvalidThreads() throws Exception {
+			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
+			Map<ProjectFlag, String> input = new LinkedHashMap<>();
+			input.put(ProjectFlag.THREADS, "hello");
+			testCrawl("input/simple/hello.html", "simple", "hello", input, output);
+		}
+
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
+		@Order(5)
+		public void testNoOutput() throws Exception {
+			URL url = new URL(new URL(GITHUB), "input/simple/hello.html");
+			Map<ProjectFlag, String> input = new LinkedHashMap<>();
+			input.put(ProjectFlag.HTML, url.toString());
+			testNoExceptions(args(input), SHORT_TIMEOUT);
+		}
+
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
+		@Order(6)
+		public void testOkTextNoSeed() throws Exception {
+			Map<ProjectFlag, String> input = new LinkedHashMap<>();
+			input.put(ProjectFlag.HTML, null);
+			input.put(ProjectFlag.TEXT, ProjectPath.HELLO.text);
+			input.put(ProjectFlag.QUERY, ProjectPath.QUERY_SIMPLE.text);
+			input.put(ProjectFlag.PARTIAL, null);
+			input.put(ProjectFlag.COUNTS, null);
+
+			Path actual = ProjectFlag.COUNTS.path;
+			Path expected = ProjectPath.EXPECTED.resolve("counts").resolve("counts-simple-hello.json");
+			checkAllOutput(args(input), Map.of(actual, expected));
+		}
+
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
+		@Order(7)
+		public void testNoTextOKSeed() throws Exception {
+			URL url = new URL(new URL(GITHUB), "input/simple/hello.html");
+
+			Map<ProjectFlag, String> input = new LinkedHashMap<>();
+			input.put(ProjectFlag.HTML, url.toString());
+			input.put(ProjectFlag.TEXT, null);
+			input.put(ProjectFlag.QUERY, ProjectPath.QUERY_SIMPLE.text);
+			input.put(ProjectFlag.PARTIAL, null);
+			input.put(ProjectFlag.INDEX, null);
+
+			Path actual = ProjectFlag.INDEX.path;
+			Path expected = ProjectPath.EXPECTED.resolve("crawl").resolve("simple").resolve("hello-index.json");
+			checkAllOutput(args(input), Map.of(actual, expected));
+		}
 	}
 
 	/** Base URL for the GitHub test website. */
@@ -385,13 +535,9 @@ public class CrawlPageTests extends ProjectTests {
 			files.put(actual, expected);
 		}
 
-		// convert configuration to argument array
-		String[] args = config.entrySet().stream()
-				.flatMap(entry -> Stream.of(entry.getKey().flag, entry.getValue()))
-				.toArray(String[]::new);
-
-		checkAllOutput(args, files);
+		checkAllOutput(args(config), files);
 	}
+
 
 	/**
 	 * Tests the inverted index output of crawl.
