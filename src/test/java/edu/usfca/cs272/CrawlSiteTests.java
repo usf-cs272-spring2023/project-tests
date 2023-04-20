@@ -1,5 +1,7 @@
 package edu.usfca.cs272;
 
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.TestClassOrder;
 
@@ -13,4 +15,9 @@ import org.junit.jupiter.api.TestClassOrder;
 public class CrawlSiteTests {
 
 
+	/** Base URL for the GitHub test website. */
+	public static final String GITHUB = CrawlPageTests.GITHUB;
+
+	/** Base directory for crawl output. */
+	public static final Path CRAWL = CrawlPageTests.CRAWL;
 }
