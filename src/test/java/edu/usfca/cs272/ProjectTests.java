@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -452,6 +454,20 @@ public class ProjectTests {
 		String[] parts = path.getFileName().toString().split("\\.");
 		String subdir = path.getParent().getFileName().toString();
 		return String.format("%s-%s-%s-%d.json", prefix, subdir, parts[0], threads);
+	}
+
+	/**
+	 * Converts a map of flags and values to an array of command-line arguments.
+	 *
+	 * @param config the flag and value pairs
+	 * @return command-line arguments
+	 */
+	public static String[] args(Map<ProjectFlag, String> config) {
+		return config.entrySet().stream()
+				.flatMap(entry -> Stream.of(entry.getKey().flag, entry.getValue()))
+				.filter(Objects::nonNull)
+				.filter(Predicate.not(String::isBlank))
+				.toArray(String[]::new);
 	}
 
 	/**
