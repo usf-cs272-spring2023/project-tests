@@ -156,4 +156,17 @@ public class ProjectNextTests {
 	public void testHtmlSite() throws Exception {
 		// TODO
 	}
+
+	/**
+	 * Tests that next project functionality is not present.
+	 *
+	 * @throws Exception if an error occurs
+	 */
+	@Test
+	@Tag("next-v4.1")
+	@Tag("next-v4.x")
+	@Tag("next-v5.0")
+	public void pass() throws Exception {
+		// No next tests for these releases!
+	}
 }
