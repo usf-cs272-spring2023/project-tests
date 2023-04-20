@@ -542,6 +542,7 @@ public class ProjectTests {
 
 						// mixed file is a special case (think about a better way to handle in future)
 						Path mixed = nix.resolve("crawl").resolve("special");
+
 						if (path.startsWith(mixed) && path.getFileName().startsWith("mixed-")) {
 							String modified = original.replace("input/text/simple/hello.txt", "input\\text\\simple\\hello.txt");
 							Files.writeString(other, modified, StandardCharsets.UTF_8);
@@ -553,6 +554,7 @@ public class ProjectTests {
 							String modified = original.replace('/', '\\');
 							Files.writeString(other, modified, StandardCharsets.UTF_8);
 						}
+
 						copied.add(other);
 					}
 				}
