@@ -12,8 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
@@ -107,9 +107,9 @@ public class CrawlPageTests extends ProjectTests {
 		}
 
 		/**
-		 * Free up memory after running --- useful for following tests.
+		 * Free up memory before running.
 		 */
-		@AfterAll
+		@BeforeAll
 		public static void freeMemory() {
 			ProjectTests.freeMemory();
 		}
@@ -250,9 +250,9 @@ public class CrawlPageTests extends ProjectTests {
 		}
 
 		/**
-		 * Free up memory after running --- useful for following tests.
+		 * Free up memory before running.
 		 */
-		@AfterAll
+		@BeforeAll
 		public static void freeMemory() {
 			ProjectTests.freeMemory();
 		}
@@ -387,9 +387,9 @@ public class CrawlPageTests extends ProjectTests {
 		}
 
 		/**
-		 * Free up memory after running --- useful for following tests.
+		 * Free up memory before running.
 		 */
-		@AfterAll
+		@BeforeAll
 		public static void freeMemory() {
 			ProjectTests.freeMemory();
 		}
@@ -528,9 +528,9 @@ public class CrawlPageTests extends ProjectTests {
 		}
 
 		/**
-		 * Free up memory after running --- useful for following tests.
+		 * Free up memory before running.
 		 */
-		@AfterAll
+		@BeforeAll
 		public static void freeMemory() {
 			ProjectTests.freeMemory();
 		}
