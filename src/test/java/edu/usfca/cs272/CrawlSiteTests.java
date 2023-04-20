@@ -157,23 +157,113 @@ public class CrawlSiteTests {
 	 */
 	@Nested
 	@Order(2)
-	@Tag("test-v4.1")
-	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComplexTests {
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(1)
-		public void testRFCs() throws MalformedURLException {
+		public void testRFCsBuild() throws MalformedURLException {
 			int crawl = 7;
+			String seed = "input/rfcs/";
+			String subdir = "rfcs";
+			String id = subdir;
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+			testCrawl(seed, subdir, id, crawl, output);
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(2)
-		public void testGuten() throws MalformedURLException {
+		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		public void testRFCsSearch() throws MalformedURLException {
 			int crawl = 7;
+			String seed = "input/rfcs/";
+			String subdir = "rfcs";
+			String id = subdir;
+			ProjectPath query = ProjectPath.QUERY_LETTERS;
+			List<ProjectFlag> output = List.of(ProjectFlag.RESULTS);
+			testPartial(seed, subdir, id, crawl, query, output);
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(3)
-		public void testJava() throws MalformedURLException {
+		public void testGutenBuild() throws MalformedURLException {
+			int crawl = 7;
+			String seed = "input/guten/";
+			String subdir = "guten";
+			String id = subdir;
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+			testCrawl(seed, subdir, id, crawl, output);
+		}
+
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
+		@Order(4)
+		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		public void testGutenSearch() throws MalformedURLException {
+			int crawl = 7;
+			String seed = "input/guten/";
+			String subdir = "guten";
+			String id = subdir;
+			ProjectPath query = ProjectPath.QUERY_COMPLEX;
+			List<ProjectFlag> output = List.of(ProjectFlag.RESULTS);
+			testPartial(seed, subdir, id, crawl, query, output);
+		}
+
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
+		@Order(5)
+		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		public void testJavaBuild() throws MalformedURLException {
 			int crawl = 50;
+			String seed = "docs/api/allclasses-index.html";
+			String subdir = "java";
+			String id = subdir;
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+			testCrawl(seed, subdir, id, crawl, output);
+		}
+
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
+		@Order(6)
+		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		public void testJavaSearch() throws MalformedURLException {
+			int crawl = 50;
+			String seed = "docs/api/allclasses-index.html";
+			String subdir = "java";
+			String id = subdir;
+			ProjectPath query = ProjectPath.QUERY_LETTERS;
+			List<ProjectFlag> output = List.of(ProjectFlag.RESULTS);
+			testPartial(seed, subdir, id, crawl, query, output);
 		}
 
 		/**
