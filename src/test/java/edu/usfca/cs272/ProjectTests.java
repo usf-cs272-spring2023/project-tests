@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
 
@@ -221,6 +222,78 @@ public class ProjectTests {
 				// At this stage, the files were the same and we can delete actual.
 				Files.deleteIfExists(actual);
 			}
+		}
+		catch (Exception e) {
+			StringWriter writer = new StringWriter();
+			e.printStackTrace(new PrintWriter(writer));
+
+			String message = writer.toString();
+			String actual = files.keySet().toString();
+			String expected = files.values().toString();
+			Assertions.fail(errorMessage(args, actual, expected, message));
+		}
+	}
+
+	/**
+	 * Checks whether {@link Driver} generates the expected output without any
+	 * exceptions. Will print the stack trace if an exception occurs. Designed to be
+	 * used within an unit test. If the test was successful, deletes the actual
+	 * files. Otherwise, keeps the files for debugging purposes.
+	 *
+	 * @param args arguments to pass to {@link Driver}
+	 * @param files map of actual to expected files to test
+	 */
+	public static void checkAllOutput(String[] args, Map<Path, Path> files) {
+		try {
+			ArrayList<Executable> tests = new ArrayList<>();
+
+			for (var entry : files.entrySet()) {
+				Path actual = entry.getKey();
+				Path expected = entry.getValue();
+
+				// Remove old actual files (if exists), setup directories if needed
+				Files.deleteIfExists(actual);
+				Files.createDirectories(actual.getParent());
+
+				// Generate (but do not run) the output test
+				String format = "\n\nActual File:\n%s\n\nExpected File:\n%s\n\nMessage:\n%s\n";
+				Executable test = () -> {
+					// Double-check we can read the expected output file
+					if (!Files.isReadable(expected)) {
+						String message = "Unable to read expected output file: " + expected.toString();
+						Assertions.fail(String.format(format, actual, expected, message));
+					}
+
+					// Double-check we can read the actual output file
+					if (!Files.isReadable(actual)) {
+						String message = "Unable to read actual output file: " + actual.toString();
+						Assertions.fail(String.format(format, actual, expected, message));
+					}
+
+					// Compare the two files
+					int count = checkFiles(actual, expected);
+
+					if (count <= 0) {
+						String message = "File " + actual.toString() + " differs on line: " + -count + ".";
+						Assertions.fail(String.format(format, actual, expected, message));
+					}
+
+					// Clean up file if get this far
+					Files.delete(actual);
+				};
+
+				// Add to the output tests
+				tests.add(test);
+			}
+
+			// Generate actual output files
+			testNoExceptions(args, LONG_TIMEOUT);
+
+			String working = Path.of(".").toAbsolutePath().normalize().toString();
+			String format = "Unexpected output\n\nWorking Directory:\n%s\n\nArguments:\n%s\n\nDetails:";
+			String header = String.format(format, working, String.join(" ", args));
+
+			Assertions.assertAll(header, tests);
 		}
 		catch (Exception e) {
 			StringWriter writer = new StringWriter();
