@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -102,6 +103,14 @@ public class CrawlPageTests extends ProjectTests {
 		})
 		public void testBirds(String subdir, String id, String seed) throws MalformedURLException {
 			testIndex(seed, subdir, id);
+		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
 		}
 	}
 
@@ -195,7 +204,6 @@ public class CrawlPageTests extends ProjectTests {
 			testPartial(seed, subdir, id, ProjectPath.QUERY_COMPLEX);
 		}
 
-
 		/**
 		 * Tests crawl output.
 		 *
@@ -234,6 +242,14 @@ public class CrawlPageTests extends ProjectTests {
 		})
 		public void testJavaIndex(String subdir, String id, String seed) throws MalformedURLException {
 			testPartial(seed, subdir, id, ProjectPath.QUERY_LETTERS);
+		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
 		}
 	}
 
@@ -363,6 +379,14 @@ public class CrawlPageTests extends ProjectTests {
 			input.put(ProjectFlag.PARTIAL, null);
 
 			testCrawl(url.toString(), "special", "mixed", input, output);
+		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
 		}
 	}
 
@@ -496,6 +520,14 @@ public class CrawlPageTests extends ProjectTests {
 			Path actual = ProjectFlag.INDEX.path;
 			Path expected = ProjectPath.EXPECTED.resolve("crawl").resolve("simple").resolve("hello-index.json");
 			checkAllOutput(args(input), Map.of(actual, expected));
+		}
+
+		/**
+		 * Free up memory after running --- useful for following tests.
+		 */
+		@AfterAll
+		public static void freeMemory() {
+			ProjectTests.freeMemory();
 		}
 	}
 
