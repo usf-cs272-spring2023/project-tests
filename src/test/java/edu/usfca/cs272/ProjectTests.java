@@ -540,7 +540,13 @@ public class ProjectTests {
 					if (!Files.isReadable(other) || Files.size(path) != Files.size(other)) {
 						String original = Files.readString(path, StandardCharsets.UTF_8);
 
-						if (path.startsWith(nix.resolve("crawl"))) {
+						// mixed file is a special case (think about a better way to handle in future)
+						Path mixed = nix.resolve("crawl").resolve("special");
+						if (path.startsWith(mixed) && path.getFileName().startsWith("mixed-")) {
+							String modified = original.replace("input/text/simple/hello.txt", "input\\text\\simple\\hello.txt");
+							Files.writeString(other, modified, StandardCharsets.UTF_8);
+						}
+						else if (path.startsWith(nix.resolve("crawl"))) {
 							Files.writeString(other, original, StandardCharsets.UTF_8);
 						}
 						else {
