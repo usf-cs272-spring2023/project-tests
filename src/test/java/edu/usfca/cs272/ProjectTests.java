@@ -255,7 +255,7 @@ public class ProjectTests {
 
 				// Remove old actual files (if exists), setup directories if needed
 				Files.deleteIfExists(actual);
-				Files.createDirectories(actual.getParent());
+				Files.createDirectories(actual.toAbsolutePath().getParent());
 
 				// Generate (but do not run) the output test
 				String format = "\n\nActual File:\n%s\n\nExpected File:\n%s\n\nMessage:\n%s\n";
