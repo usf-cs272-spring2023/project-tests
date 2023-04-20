@@ -1,7 +1,9 @@
 package edu.usfca.cs272;
 
 import java.net.MalformedURLException;
-import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.ClassOrderer;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
 
@@ -42,38 +45,102 @@ public class CrawlSiteTests {
 	 */
 	@Nested
 	@Order(1)
-	@Tag("test-v4.1")
-	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class InitialTests {
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(1)
-		public void testSimpleCounts() {
+		public void testSimpleCounts() throws MalformedURLException {
 			int crawl = 15;
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir;
+			testCrawl(seed, subdir, id, crawl, List.of(ProjectFlag.COUNTS));
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(2)
-		public void testSimpleIndex() {
+		public void testSimpleIndex() throws MalformedURLException {
 			int crawl = 15;
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir;
+			testCrawl(seed, subdir, id, crawl, List.of(ProjectFlag.INDEX));
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(3)
-		public void testSimpleSearch() {
+		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		public void testSimpleSearch() throws MalformedURLException {
 			int crawl = 15;
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir;
+			ProjectPath query = ProjectPath.QUERY_SIMPLE;
+			testPartial(seed, subdir, id, crawl, query, List.of(ProjectFlag.RESULTS));
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(4)
-		public void testBirdsCounts() {
+		public void testBirdsCounts() throws MalformedURLException {
 			int crawl = 50;
+			String seed = "input/birds/";
+			String subdir = "birds";
+			String id = subdir;
+			testCrawl(seed, subdir, id, crawl, List.of(ProjectFlag.COUNTS));
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(5)
-		public void testBirdsIndex() {
+		public void testBirdsIndex() throws MalformedURLException {
 			int crawl = 50;
+			String seed = "input/birds/";
+			String subdir = "birds";
+			String id = subdir;
+			testCrawl(seed, subdir, id, crawl, List.of(ProjectFlag.INDEX));
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(6)
-		public void testBirdsSearch() {
+		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		public void testBirdsSearch() throws MalformedURLException {
 			int crawl = 50;
+			String seed = "input/birds/";
+			String subdir = "birds";
+			String id = subdir;
+			ProjectPath query = ProjectPath.QUERY_LETTERS;
+			testPartial(seed, subdir, id, crawl, query, List.of(ProjectFlag.RESULTS));
 		}
 
 		/**
@@ -95,17 +162,17 @@ public class CrawlSiteTests {
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComplexTests {
 		@Order(1)
-		public void testRFCs() {
+		public void testRFCs() throws MalformedURLException {
 			int crawl = 7;
 		}
 
 		@Order(2)
-		public void testGuten() {
+		public void testGuten() throws MalformedURLException {
 			int crawl = 7;
 		}
 
 		@Order(3)
-		public void testJava() {
+		public void testJava() throws MalformedURLException {
 			int crawl = 50;
 		}
 
@@ -128,17 +195,17 @@ public class CrawlSiteTests {
 	@TestMethodOrder(OrderAnnotation.class)
 	public class SpecialTests {
 		@Order(1)
-		public void testRecurse() {
+		public void testRecurse() throws MalformedURLException {
 			int crawl = 100;
 		}
 
 		@Order(2)
-		public void testRedirect() {
+		public void testRedirect() throws MalformedURLException {
 			int crawl = 10;
 		}
 
 		@Order(3)
-		public void testLocal() {
+		public void testLocal() throws MalformedURLException {
 			int crawl = 200;
 		}
 
@@ -230,9 +297,42 @@ public class CrawlSiteTests {
 		}
 	}
 
-	/** Base URL for the GitHub test website. */
-	public static final String GITHUB = CrawlPageTests.GITHUB;
+	/**
+	 * Calls {@link CrawlPageTests#testCrawl(String, String, String, Map, List)}
+	 * with values for the crawl limit and number of threads.
+	 *
+	 * @param seed the seed link
+	 * @param subdir the expected output subdir
+	 * @param id the test id
+	 * @param crawl the crawl limit
+	 * @param output the output flags to use
+	 * @throws MalformedURLException if unable to convert seed to URL
+	 */
+	public static void testCrawl(String seed, String subdir, String id, int crawl, List<ProjectFlag> output) throws MalformedURLException {
+		Map<ProjectFlag, String> config = new LinkedHashMap<>();
+		config.put(ProjectFlag.MAX, Integer.toString(crawl));
+		config.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
+		CrawlPageTests.testCrawl(seed, subdir, id + "-" + crawl, config, output);
+	}
 
-	/** Base directory for crawl output. */
-	public static final Path CRAWL = CrawlPageTests.CRAWL;
+	/**
+	 * Calls {@link CrawlPageTests#testCrawl(String, String, String, Map, List)}
+	 * with values for the crawl limit and number of threads.
+	 *
+	 * @param seed the seed link
+	 * @param subdir the expected output subdir
+	 * @param id the test id
+	 * @param crawl the crawl limit
+	 * @param query the query file
+	 * @param output the output flags to use
+	 * @throws MalformedURLException if unable to convert seed to URL
+	 */
+	public static void testPartial(String seed, String subdir, String id, int crawl, ProjectPath query, List<ProjectFlag> output) throws MalformedURLException {
+		Map<ProjectFlag, String> config = new LinkedHashMap<>();
+		config.put(ProjectFlag.QUERY, query.text);
+		config.put(ProjectFlag.PARTIAL, null);
+		config.put(ProjectFlag.MAX, Integer.toString(crawl));
+		config.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
+		CrawlPageTests.testCrawl(seed, subdir, id + "-" + crawl, config, output);
+	}
 }
