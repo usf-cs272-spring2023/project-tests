@@ -1,5 +1,6 @@
 package edu.usfca.cs272;
 
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -44,28 +46,34 @@ public class CrawlSiteTests {
 	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class InitialTests {
+		@Order(1)
 		public void testSimpleCounts() {
-
+			int crawl = 15;
 		}
 
+		@Order(2)
 		public void testSimpleIndex() {
-
+			int crawl = 15;
 		}
 
+		@Order(3)
 		public void testSimpleSearch() {
-
+			int crawl = 15;
 		}
 
+		@Order(4)
 		public void testBirdsCounts() {
-
+			int crawl = 50;
 		}
 
+		@Order(5)
 		public void testBirdsIndex() {
-
+			int crawl = 50;
 		}
 
+		@Order(6)
 		public void testBirdsSearch() {
-
+			int crawl = 50;
 		}
 
 		/**
@@ -86,20 +94,19 @@ public class CrawlSiteTests {
 	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComplexTests {
+		@Order(1)
 		public void testRFCs() {
-
+			int crawl = 7;
 		}
 
+		@Order(2)
 		public void testGuten() {
-
+			int crawl = 7;
 		}
 
-		public void testInput() {
-
-		}
-
+		@Order(3)
 		public void testJava() {
-
+			int crawl = 50;
 		}
 
 		/**
@@ -120,16 +127,19 @@ public class CrawlSiteTests {
 	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class SpecialTests {
+		@Order(1)
 		public void testRecurse() {
-
+			int crawl = 100;
 		}
 
+		@Order(2)
 		public void testRedirect() {
-
+			int crawl = 10;
 		}
 
+		@Order(3)
 		public void testLocal() {
-
+			int crawl = 200;
 		}
 
 		/**
@@ -151,22 +161,27 @@ public class CrawlSiteTests {
 	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
+		@Order(1)
 		public void testMissingLimit() throws Exception {
 
 		}
 
+		@Order(2)
 		public void testInvalidLimit() throws Exception {
 
 		}
 
+		@Order(3)
 		public void testMissingThreads() throws Exception {
 
 		}
 
+		@Order(4)
 		public void testInvalidThreads() throws Exception {
 
 		}
 
+		@Order(5)
 		public void testNoOutput() throws Exception {
 
 		}
@@ -190,7 +205,21 @@ public class CrawlSiteTests {
 	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class RuntimeTests {
+		@Order(1)
+		@RepeatedTest(3)
+		public void testConsistency() throws MalformedURLException {
 
+		}
+
+		@Order(2)
+		public void testBuild() throws MalformedURLException {
+
+		}
+
+		@Order(3)
+		public void testSearch() throws MalformedURLException {
+
+		}
 
 		/**
 		 * Free up memory before running.
