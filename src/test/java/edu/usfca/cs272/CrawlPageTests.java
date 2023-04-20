@@ -74,13 +74,10 @@ public class CrawlPageTests extends ProjectTests {
 			"simple, symbols,  input/simple/symbols.html",
 			"simple, dir,      input/simple/dir.txt",
 			"simple, wrong,    input/simple/wrong_extension.html",
-			"birds,  raven,    input/birds/raven.html",
-			"birds,  falcon,   input/birds/falcon.html#file=hello.jpg",
+			"simple, stems,    input/simple/stems.html"
 		})
-		public void testIndex(String subdir, String id, String seed) throws MalformedURLException {
-			Map<ProjectFlag, String> input = Collections.emptyMap();
-			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
-			testCrawl(seed, subdir, id, input, output);
+		public void testSimple(String subdir, String id, String seed) throws MalformedURLException {
+			testIndex(seed, subdir, id);
 		}
 
 		/**
@@ -94,15 +91,13 @@ public class CrawlPageTests extends ProjectTests {
 		@Order(3)
 		@ParameterizedTest(name = "{index} {2}")
 		@CsvSource({
-			"simple, stems, input/simple/stems.html",
-			"birds,  birds, input/birds/"
+			"birds, birds,  input/birds/",
+			"birds, raven,  input/birds/raven.html",
+			"birds, falcon, input/birds/falcon.html#file=hello.jpg"
 		})
-		public void testCountsIndex(String subdir, String id, String seed) throws MalformedURLException {
-			Map<ProjectFlag, String> input = Collections.emptyMap();
-			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
-			testCrawl(seed, subdir, id, input, output);
+		public void testBirds(String subdir, String id, String seed) throws MalformedURLException {
+			testIndex(seed, subdir, id);
 		}
-
 	}
 
 	/**
@@ -112,7 +107,45 @@ public class CrawlPageTests extends ProjectTests {
 	@Order(2)
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ComplexTests {
+		/**
+		 * Tests crawl output.
+		 *
+		 * @param subdir the expected output subdirectory
+		 * @param id the unique test and file id
+		 * @param seed the seed url
+		 * @throws MalformedURLException if unable to create seed url
+		 */
+		@Order(1)
+		@ParameterizedTest(name = "{index} {2}")
+		@CsvSource({
+			"rfcs, rfcs,    input/rfcs/",
+			"rfcs, rfc3629, input/rfcs/rfc3629.html",
+			"rfcs, rfc475,  input/rfcs/rfc475.html",
+			"rfcs, rfc5646, input/rfcs/rfc5646.html",
+			"rfcs, rfc6797, input/rfcs/rfc6797.html",
+			"rfcs, rfc6805, input/rfcs/rfc6805.html",
+			"rfcs, rfc6838, input/rfcs/rfc6838.html"
+		})
+		public void testRFCsIndex(String subdir, String id, String seed) throws MalformedURLException {
+			testIndex(seed, subdir, id);
+		}
 
+		/**
+		 * Tests crawl output.
+		 *
+		 * @param subdir the expected output subdirectory
+		 * @param id the unique test and file id
+		 * @param seed the seed url
+		 * @throws MalformedURLException if unable to create seed url
+		 */
+		@Order(2)
+		@ParameterizedTest(name = "{index} {2}")
+		@CsvSource({
+			"rfcs, rfc7231, input/rfcs/rfc7231.html"
+		})
+		public void testRFC7231(String subdir, String id, String seed) throws MalformedURLException {
+			testPartial(seed, subdir, id, ProjectPath.QUERY_LETTERS);
+		}
 	}
 
 	/**
@@ -162,9 +195,7 @@ public class CrawlPageTests extends ProjectTests {
 			"special, type-cover,   input/guten/1661-h/images/cover.jpg",
 		})
 		public void testNotHtml(String subdir, String id, String seed) throws MalformedURLException {
-			Map<ProjectFlag, String> input = Collections.emptyMap();
-			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
-			testCrawl(seed, subdir, id, input, output);
+			testIndex(seed, subdir, id);
 		}
 
 		/**
@@ -182,9 +213,7 @@ public class CrawlPageTests extends ProjectTests {
 			"special, status-410, https://www.cs.usfca.edu/~cs272/redirect/gone"
 		})
 		public void testNotOkay(String subdir, String id, String seed) throws MalformedURLException {
-			Map<ProjectFlag, String> input = Collections.emptyMap();
-			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
-			testCrawl(seed, subdir, id, input, output);
+			testIndex(seed, subdir, id);
 		}
 
 		/**
@@ -203,9 +232,7 @@ public class CrawlPageTests extends ProjectTests {
 			"special, redirect-3, https://www.cs.usfca.edu/~cs272/redirect/three"
 		})
 		public void testRedirect(String subdir, String id, String seed) throws MalformedURLException {
-			Map<ProjectFlag, String> input = Collections.emptyMap();
-			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
-			testCrawl(seed, subdir, id, input, output);
+			testIndex(seed, subdir, id);
 		}
 
 		/**
@@ -223,9 +250,7 @@ public class CrawlPageTests extends ProjectTests {
 			"special, loop-2, https://www.cs.usfca.edu/~cs272/redirect/loop2"
 		})
 		public void testFailedRedirect(String subdir, String id, String seed) throws MalformedURLException {
-			Map<ProjectFlag, String> input = Collections.emptyMap();
-			List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
-			testCrawl(seed, subdir, id, input, output);
+			testIndex(seed, subdir, id);
 		}
 	}
 
@@ -285,5 +310,34 @@ public class CrawlPageTests extends ProjectTests {
 				.toArray(String[]::new);
 
 		checkAllOutput(args, files);
+	}
+
+	/**
+	 * Tests the inverted index output of crawl.
+	 *
+	 * @param seed the seed link
+	 * @param subdir the expected output subdir
+	 * @param id the test id
+	 * @throws MalformedURLException if unable to convert seed to URL
+	 */
+	public static void testIndex(String seed, String subdir, String id) throws MalformedURLException {
+		Map<ProjectFlag, String> input = Collections.emptyMap();
+		List<ProjectFlag> output = List.of(ProjectFlag.INDEX);
+		testCrawl(seed, subdir, id, input, output);
+	}
+
+	/**
+	 * Tests the inverted index and partial search output output of crawl.
+	 *
+	 * @param seed the seed link
+	 * @param subdir the expected output subdir
+	 * @param id the test id
+	 * @param query the query file
+	 * @throws MalformedURLException if unable to convert seed to URL
+	 */
+	public static void testPartial(String seed, String subdir, String id, ProjectPath query) throws MalformedURLException {
+		Map<ProjectFlag, String> input = Map.of(ProjectFlag.QUERY, query.text);
+		List<ProjectFlag> output = List.of(ProjectFlag.INDEX, ProjectFlag.RESULTS);
+		testCrawl(seed, subdir, id, input, output);
 	}
 }
