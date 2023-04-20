@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
@@ -506,7 +505,7 @@ public class ProjectTests {
 			}
 		}
 		catch (IOException e) {
-			Assertions.fail("Unable to copy expected files for Windows systems.");
+			Assertions.fail("Unable to copy expected files for Windows systems.", e);
 		}
 
 		Assertions.assertAll(
@@ -529,9 +528,12 @@ public class ProjectTests {
 		Path nix = Path.of("expected-nix");
 		Path win = Path.of("expected-win");
 
+		// mixed file is a special case (think about a better way to handle in future)
+		Path mixed = nix.resolve("crawl").resolve("special");
+
 		// loop through each expected file
 		try (Stream<Path> stream = Files.walk(nix, FileVisitOption.FOLLOW_LINKS)) {
-			for (Path path : stream.collect(Collectors.toList())) {
+			for (Path path : stream.toList()) {
 				// path for windows version of expected file
 				Path other = win.resolve(nix.relativize(path));
 
@@ -540,10 +542,7 @@ public class ProjectTests {
 					if (!Files.isReadable(other) || Files.size(path) != Files.size(other)) {
 						String original = Files.readString(path, StandardCharsets.UTF_8);
 
-						// mixed file is a special case (think about a better way to handle in future)
-						Path mixed = nix.resolve("crawl").resolve("special");
-
-						if (path.startsWith(mixed) && path.getFileName().startsWith("mixed-")) {
+						if (path.startsWith(mixed) && path.getFileName().toString().startsWith("mixed-")) {
 							String modified = original.replace("input/text/simple/hello.txt", "input\\text\\simple\\hello.txt");
 							Files.writeString(other, modified, StandardCharsets.UTF_8);
 						}
