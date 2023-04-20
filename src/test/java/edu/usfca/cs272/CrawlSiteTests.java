@@ -284,19 +284,52 @@ public class CrawlSiteTests {
 	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class SpecialTests {
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(1)
 		public void testRecurse() throws MalformedURLException {
 			int crawl = 100;
+			String seed = "https://www.cs.usfca.edu/~cs272/recurse/link01.html";
+			String subdir = "special";
+			String id = "recurse";
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+			testCrawl(seed, subdir, id, crawl, output);
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(2)
 		public void testRedirect() throws MalformedURLException {
 			int crawl = 10;
+			String seed = "https://www.cs.usfca.edu/~cs272/redirect/index.html";
+			String subdir = "special";
+			String id = "redirect";
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+			testCrawl(seed, subdir, id, crawl, output);
 		}
 
+		/**
+		 * Tests the project output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(3)
 		public void testLocal() throws MalformedURLException {
 			int crawl = 200;
+			String seed = "https://www.cs.usfca.edu/~cs272/local.html";
+			String subdir = "special";
+			String id = "local";
+			List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+			testCrawl(seed, subdir, id, crawl, output);
 		}
 
 		/**
