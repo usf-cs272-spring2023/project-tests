@@ -86,7 +86,7 @@ public class ProjectNextTests {
 			// should fail and throw an error
 			testMultithreaded(() -> testNoExceptions(args, LONG_TIMEOUT));
 		}
-		catch (AssertionFailedError e) {
+		catch (AssertionFailedError | MultipleFailuresError e) {
 			Assertions.assertNotNull(e);
 			return;
 		}
