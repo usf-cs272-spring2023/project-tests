@@ -57,6 +57,7 @@ public class CrawlPageTests extends ProjectTests {
 	@Order(1)
 	@Tag("test-v4.0")
 	@Tag("test-v4.1")
+	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class InitialTests {
 		/**
@@ -156,6 +157,7 @@ public class CrawlPageTests extends ProjectTests {
 		@ParameterizedTest(name = "{index} {2}")
 		@Tag("test-v4.0")
 		@Tag("test-v4.1")
+		@Tag("test-v4.x")
 		@CsvSource({
 			"rfcs, rfc7231, input/rfcs/rfc7231.html"
 		})
@@ -197,6 +199,7 @@ public class CrawlPageTests extends ProjectTests {
 		@ParameterizedTest(name = "{index} {2}")
 		@Tag("test-v4.0")
 		@Tag("test-v4.1")
+		@Tag("test-v4.x")
 		@CsvSource({
 			"guten, guten-2701, input/guten/2701-h/2701-h.htm"
 		})
@@ -237,6 +240,8 @@ public class CrawlPageTests extends ProjectTests {
 		@ParameterizedTest(name = "{index} {2}")
 		@Tag("test-v4.0")
 		@Tag("test-v4.1")
+		@Tag("test-v4.x")
+		@Tag("past-v5")
 		@CsvSource({
 			"java, allclasses, docs/api/allclasses-index.html"
 		})
@@ -261,7 +266,7 @@ public class CrawlPageTests extends ProjectTests {
 	@Tag("test-v4.0")
 	@Tag("test-v4.1")
 	@Tag("test-v4.x")
-	@Tag("test-v5.0")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class SpecialTests {
 		/**
@@ -398,7 +403,7 @@ public class CrawlPageTests extends ProjectTests {
 	@Tag("test-v4.0")
 	@Tag("test-v4.1")
 	@Tag("test-v4.x")
-	@Tag("test-v5.0")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
 		/**
