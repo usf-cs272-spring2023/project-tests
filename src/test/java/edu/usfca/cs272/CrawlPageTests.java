@@ -187,6 +187,46 @@ public class CrawlPageTests extends ProjectTests {
 		public void testGuten2701(String subdir, String id, String seed) throws MalformedURLException {
 			testPartial(seed, subdir, id, ProjectPath.QUERY_COMPLEX);
 		}
+
+
+		/**
+		 * Tests crawl output.
+		 *
+		 * @param subdir the expected output subdirectory
+		 * @param id the unique test and file id
+		 * @param seed the seed url
+		 * @throws MalformedURLException if unable to create seed url
+		 */
+		@Order(5)
+		@ParameterizedTest(name = "{index} {2}")
+		@CsvSource({
+			"java, AbstractCollection, docs/api/java.base/java/util/AbstractCollection.html",
+			"java, SourceVersion, docs/api/java.compiler/javax/lang/model/SourceVersion.html",
+			"java, AboutHandler, docs/api/java.desktop/java/awt/desktop/AboutHandler.html",
+			"java, AbstractPreferences, docs/api/java.prefs/java/util/prefs/AbstractPreferences.html",
+			"java, overview, docs/api/overview-tree.html"
+		})
+		public void testJava(String subdir, String id, String seed) throws MalformedURLException {
+			testCountsIndex(seed, subdir, id);
+		}
+
+		/**
+		 * Tests crawl output.
+		 *
+		 * @param subdir the expected output subdirectory
+		 * @param id the unique test and file id
+		 * @param seed the seed url
+		 * @throws MalformedURLException if unable to create seed url
+		 */
+		@Order(6)
+		@ParameterizedTest(name = "{index} {2}")
+		@Tag("test-v4.0")
+		@CsvSource({
+			"java, allclasses, docs/api/allclasses-index.html"
+		})
+		public void testJavaIndex(String subdir, String id, String seed) throws MalformedURLException {
+			testPartial(seed, subdir, id, ProjectPath.QUERY_LETTERS);
+		}
 	}
 
 	/**
@@ -368,6 +408,20 @@ public class CrawlPageTests extends ProjectTests {
 	}
 
 	/**
+	 * Tests the inverted index and counts output of crawl.
+	 *
+	 * @param seed the seed link
+	 * @param subdir the expected output subdir
+	 * @param id the test id
+	 * @throws MalformedURLException if unable to convert seed to URL
+	 */
+	public static void testCountsIndex(String seed, String subdir, String id) throws MalformedURLException {
+		Map<ProjectFlag, String> input = Collections.emptyMap();
+		List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX);
+		testCrawl(seed, subdir, id, input, output);
+	}
+
+	/**
 	 * Tests the inverted index and partial search output output of crawl.
 	 *
 	 * @param seed the seed link
@@ -378,7 +432,7 @@ public class CrawlPageTests extends ProjectTests {
 	 */
 	public static void testPartial(String seed, String subdir, String id, ProjectPath query) throws MalformedURLException {
 		Map<ProjectFlag, String> input = Map.of(ProjectFlag.QUERY, query.text, ProjectFlag.PARTIAL, "");
-		List<ProjectFlag> output = List.of(ProjectFlag.INDEX, ProjectFlag.RESULTS);
+		List<ProjectFlag> output = List.of(ProjectFlag.COUNTS, ProjectFlag.INDEX, ProjectFlag.RESULTS);
 		testCrawl(seed, subdir, id, input, output);
 	}
 }
