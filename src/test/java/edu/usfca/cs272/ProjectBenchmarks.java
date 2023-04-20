@@ -1,6 +1,5 @@
 package edu.usfca.cs272;
 
-import static edu.usfca.cs272.ThreadBuildTests.Threads.FOUR;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -38,8 +37,11 @@ public class ProjectBenchmarks extends ProjectTests {
 	/** The number of timed runs when benchmarking. */
 	public static final int TIME_RUNS = 6;
 
-	/** The default number of threads to use when benchmarking. */
-	public static final ThreadBuildTests.Threads BENCH_THREADS = FOUR;
+	/** The default number of threads to use when benchmarking single versus multithreading. */
+	public static final ThreadBuildTests.Threads BENCH_MULTI = ThreadBuildTests.Threads.THREE;
+
+	/** The default number of threads to use when benchmarking workers. */
+	public static final ThreadBuildTests.Threads BENCH_WORKERS = ThreadBuildTests.Threads.FOUR;
 
 	/**
 	 * Compares the runtime using two different sets of arguments. Outputs the

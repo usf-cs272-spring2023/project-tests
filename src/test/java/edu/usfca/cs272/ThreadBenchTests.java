@@ -47,7 +47,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		@Tag("test-v3.2")
 		@Tag("test-v3.x")
 		public void testCount() {
-			new ThreadBuildTests().new ComplexTests().testTextCounts(BENCH_THREADS);
+			new ThreadBuildTests().new ComplexTests().testTextCounts(BENCH_WORKERS);
 		}
 
 		/**
@@ -59,7 +59,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		@Tag("test-v3.2")
 		@Tag("test-v3.x")
 		public void testIndex() {
-			new ThreadBuildTests().new ComplexTests().testTextIndex(BENCH_THREADS);
+			new ThreadBuildTests().new ComplexTests().testTextIndex(BENCH_WORKERS);
 		}
 
 		/**
@@ -70,7 +70,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		@Tag("test-v3.2")
 		@Tag("test-v3.x")
 		public void testExact() {
-			new ThreadSearchTests().new ExactTests().testTextComplex(BENCH_THREADS);
+			new ThreadSearchTests().new ExactTests().testTextComplex(BENCH_WORKERS);
 		}
 
 		/**
@@ -81,7 +81,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		@Tag("test-v3.2")
 		@Tag("test-v3.x")
 		public void testPartial() {
-			new ThreadSearchTests().new PartialTests().testTextComplex(BENCH_THREADS);
+			new ThreadSearchTests().new PartialTests().testTextComplex(BENCH_WORKERS);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		@Tag("test-v3.1")
 		public void testIndexOneMany() {
 			String[] args1 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, String.valueOf(1) };
-			String[] args2 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, BENCH_THREADS.text };
+			String[] args2 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, BENCH_WORKERS.text };
 
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args1, SHORT_TIMEOUT);
@@ -121,8 +121,8 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("Build", "1 Worker", args1, BENCH_THREADS.text + " Workers", args2);
-				Supplier<String> debug = () -> String.format(format, BENCH_THREADS.num, result, target, "1 worker");
+				double result = compare("Build", "1 Worker", args1, BENCH_WORKERS.text + " Workers", args2);
+				Supplier<String> debug = () -> String.format(format, BENCH_WORKERS.num, result, target, "1 worker");
 				assertTrue(result >= target, debug);
 			});
 		}
@@ -135,7 +135,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 		@Tag("test-v3.1")
 		public void testIndexSingleMulti() {
 			String[] args1 = { TEXT.flag, ProjectPath.TEXT.text };
-			String[] args2 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, BENCH_THREADS.text };
+			String[] args2 = { TEXT.flag, ProjectPath.TEXT.text, THREADS.flag, BENCH_MULTI.text };
 
 			// make sure code runs without exceptions before testing
 			testNoExceptions(args1, SHORT_TIMEOUT);
@@ -143,8 +143,8 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("Build", "Single", args1, BENCH_THREADS.text + " Workers", args2);
-				Supplier<String> debug = () -> String.format(format, BENCH_THREADS.num, result, target, "single-threading");
+				double result = compare("Build", "Single", args1, BENCH_MULTI.text + " Workers", args2);
+				Supplier<String> debug = () -> String.format(format, BENCH_MULTI.num, result, target, "single-threading");
 				assertTrue(result >= target, debug);
 			});
 		}
@@ -164,7 +164,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 			String[] args2 = {
 					TEXT.flag, ProjectPath.TEXT.text, QUERY.flag, QUERY_COMPLEX.text,
-					PARTIAL.flag, THREADS.flag, BENCH_THREADS.text
+					PARTIAL.flag, THREADS.flag, BENCH_WORKERS.text
 			};
 
 			// make sure code runs without exceptions before testing
@@ -173,8 +173,8 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("Search", "1 Worker", args1, BENCH_THREADS.text + " Workers", args2);
-				Supplier<String> debug = () -> String.format(format, BENCH_THREADS.num, result, target, "1 worker");
+				double result = compare("Search", "1 Worker", args1, BENCH_WORKERS.text + " Workers", args2);
+				Supplier<String> debug = () -> String.format(format, BENCH_WORKERS.num, result, target, "1 worker");
 				assertTrue(result >= target, debug);
 			});
 		}
@@ -190,7 +190,7 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 			String[] args2 = {
 					TEXT.flag, ProjectPath.TEXT.text, QUERY.flag, QUERY_COMPLEX.text,
-					PARTIAL.flag, THREADS.flag, BENCH_THREADS.text
+					PARTIAL.flag, THREADS.flag, BENCH_MULTI.text
 			};
 
 			// make sure code runs without exceptions before testing
@@ -199,8 +199,8 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 			// then test the timing
 			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
-				double result = compare("Search", "Single", args1, BENCH_THREADS.text + " Workers", args2);
-				Supplier<String> debug = () -> String.format(format, BENCH_THREADS.num, result, target, "single-threading");
+				double result = compare("Search", "Single", args1, BENCH_MULTI.text + " Workers", args2);
+				Supplier<String> debug = () -> String.format(format, BENCH_MULTI.num, result, target, "single-threading");
 				assertTrue(result >= target, debug);
 			});
 		}

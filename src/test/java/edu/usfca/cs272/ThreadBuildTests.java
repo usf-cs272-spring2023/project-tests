@@ -386,6 +386,9 @@ public class ThreadBuildTests extends ProjectTests {
 		/** Two threads */
 		TWO(2),
 
+		/** Three threads */
+		THREE(3),
+
 		/** Four threads */
 		FOUR(4);
 
