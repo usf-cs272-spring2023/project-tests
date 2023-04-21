@@ -290,6 +290,7 @@ public class CrawlSiteTests extends ProjectBenchmarks {
 	@Order(3)
 	@Tag("test-v4.1")
 	@Tag("test-v4.x")
+	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class SpecialTests {
 		/**

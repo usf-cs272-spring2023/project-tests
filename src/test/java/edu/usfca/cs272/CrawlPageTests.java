@@ -56,8 +56,6 @@ public class CrawlPageTests extends ProjectTests {
 	@Nested
 	@Order(1)
 	@Tag("test-v4.0")
-	@Tag("test-v4.1")
-	@Tag("test-v4.x")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class InitialTests {
 		/**
@@ -264,9 +262,6 @@ public class CrawlPageTests extends ProjectTests {
 	@Nested
 	@Order(3)
 	@Tag("test-v4.0")
-	@Tag("test-v4.1")
-	@Tag("test-v4.x")
-	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class SpecialTests {
 		/**
