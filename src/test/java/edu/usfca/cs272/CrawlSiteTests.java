@@ -1,9 +1,15 @@
 package edu.usfca.cs272;
 
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.ClassOrderer;
@@ -16,6 +22,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import edu.usfca.cs272.ThreadBuildTests.Threads;
+
 /**
  * A test suite for project v4.0.
  *
@@ -23,7 +31,7 @@ import org.junit.jupiter.api.TestMethodOrder;
  * @version Spring 2023
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class CrawlSiteTests {
+public class CrawlSiteTests extends ProjectBenchmarks {
 	// ███████╗████████╗ ██████╗ ██████╗
 	// ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗
 	// ███████╗   ██║   ██║   ██║██████╔╝
@@ -351,29 +359,101 @@ public class CrawlSiteTests {
 	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class ExceptionTests {
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
 		@Order(1)
 		public void testMissingLimit() throws Exception {
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.MAX, null);
+			config.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
 
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir;
+
+			CrawlPageTests.testCrawl(seed, subdir, id, config, List.of(ProjectFlag.INDEX));
 		}
 
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
 		@Order(2)
 		public void testInvalidLimit() throws Exception {
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.MAX, "hello");
+			config.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
 
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir;
+
+			CrawlPageTests.testCrawl(seed, subdir, id, config, List.of(ProjectFlag.INDEX));
 		}
 
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
 		@Order(3)
 		public void testMissingThreads() throws Exception {
+			int crawl = 15;
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir + "-" + crawl;
 
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.MAX, Integer.toString(crawl));
+
+			CrawlPageTests.testCrawl(seed, subdir, id, config, List.of(ProjectFlag.INDEX));
 		}
 
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
 		@Order(4)
 		public void testInvalidThreads() throws Exception {
+			int crawl = 15;
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir + "-" + crawl;
 
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.MAX, Integer.toString(crawl));
+			config.put(ProjectFlag.THREADS, "hello");
+
+			CrawlPageTests.testCrawl(seed, subdir, id, config, List.of(ProjectFlag.INDEX));
 		}
 
+		/**
+		 * Tests that exceptions are not thrown.
+		 *
+		 * @throws Exception if an error occurs
+		 */
+		@Test
 		@Order(5)
 		public void testNoOutput() throws Exception {
+			int crawl = 15;
+			String seed = "input/simple/";
+			String subdir = "simple";
+			String id = subdir + "-" + crawl;
 
+			Map<ProjectFlag, String> config = new LinkedHashMap<>();
+			config.put(ProjectFlag.MAX, Integer.toString(crawl));
+			config.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
+
+			CrawlPageTests.testCrawl(seed, subdir, id, config, Collections.emptyList());
 		}
 
 		/**
@@ -395,20 +475,99 @@ public class CrawlSiteTests {
 	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class RuntimeTests {
+		/**
+		 * Tests consistency of output.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
 		@Order(1)
 		@RepeatedTest(3)
 		public void testConsistency() throws MalformedURLException {
-
+			new ComplexTests().testGutenSearch();
 		}
 
+		/**
+		 * Tests build speedup.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(2)
 		public void testBuild() throws MalformedURLException {
+			String seed = "docs/api/allclasses-index.html";
+			URL url = new URL(new URL(CrawlPageTests.GITHUB), seed);
+			int crawl = 25; // smaller to speed up benchmark
 
+			Map<ProjectFlag, String> config1 = new LinkedHashMap<>();
+			Map<ProjectFlag, String> config2 = new LinkedHashMap<>();
+
+			config1.put(ProjectFlag.HTML, url.toString());
+			config1.put(ProjectFlag.MAX, Integer.toString(crawl));
+			config1.put(ProjectFlag.THREADS, Threads.ONE.text);
+
+			config2.putAll(config1);
+			config2.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
+
+			// convert to arguments
+			String[] args1 = args(config1);
+			String[] args2 = args(config2);
+
+			// make sure code runs without exceptions before testing
+			testNoExceptions(args1, SHORT_TIMEOUT);
+			testNoExceptions(args2, SHORT_TIMEOUT);
+
+			String format = ThreadBenchTests.format;
+			double target = ProjectBenchmarks.FAST_SPEEDUP;
+
+			// then test the timing
+			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
+				double result = compare("Build", "1 Worker", args1, BENCH_WORKERS.text + " Workers", args2);
+				Supplier<String> debug = () -> String.format(format, BENCH_WORKERS.num, result, target, "1 worker");
+				assertTrue(result >= target, debug);
+			});
 		}
 
+		/**
+		 * Tests search speedup.
+		 *
+		 * @throws MalformedURLException if unable to convert seed to URL
+		 */
+		@Test
 		@Order(3)
 		public void testSearch() throws MalformedURLException {
+			String seed = "docs/api/allclasses-index.html";
+			URL url = new URL(new URL(CrawlPageTests.GITHUB), seed);
+			int crawl = 25; // smaller to speed up benchmark
 
+			Map<ProjectFlag, String> config1 = new LinkedHashMap<>();
+			Map<ProjectFlag, String> config2 = new LinkedHashMap<>();
+
+			config1.put(ProjectFlag.HTML, url.toString());
+			config1.put(ProjectFlag.MAX, Integer.toString(crawl));
+			config1.put(ProjectFlag.QUERY, ProjectPath.QUERY_LETTERS.text);
+			config1.put(ProjectFlag.PARTIAL, null);
+			config1.put(ProjectFlag.THREADS, Threads.ONE.text);
+
+			config2.putAll(config1);
+			config2.put(ProjectFlag.THREADS, ThreadBenchTests.BENCH_WORKERS.text);
+
+			// convert to arguments
+			String[] args1 = args(config1);
+			String[] args2 = args(config2);
+
+			// make sure code runs without exceptions before testing
+			testNoExceptions(args1, SHORT_TIMEOUT);
+			testNoExceptions(args2, SHORT_TIMEOUT);
+
+			String format = ThreadBenchTests.format;
+			double target = ProjectBenchmarks.FAST_SPEEDUP;
+
+			// then test the timing
+			assertTimeoutPreemptively(LONG_TIMEOUT, () -> {
+				double result = compare("Search", "1 Worker", args1, BENCH_WORKERS.text + " Workers", args2);
+				Supplier<String> debug = () -> String.format(format, BENCH_WORKERS.num, result, target, "1 worker");
+				assertTrue(result >= target, debug);
+			});
 		}
 
 		/**
