@@ -262,8 +262,6 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 	@Nested
 	@Order(4)
 	@Tag("test-v3.x")
-	@Tag("past-v4")
-	@Tag("past-v5")
 	@TestMethodOrder(OrderAnnotation.class)
 	public class FastRuntimeTests extends SlowRuntimeTests {
 		/**
@@ -284,6 +282,8 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 		@Test
 		@Order(2)
+		@Tag("past-v4")
+		@Tag("past-v5")
 		@Override
 		public void testIndexSingleMulti() {
 			super.testIndexSingleMulti();
@@ -298,6 +298,8 @@ public class ThreadBenchTests extends ProjectBenchmarks {
 
 		@Test
 		@Order(4)
+		@Tag("past-v4")
+		@Tag("past-v5")
 		@Override
 		public void testSearchSingleMulti() {
 			super.testSearchSingleMulti();
