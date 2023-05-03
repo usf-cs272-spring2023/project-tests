@@ -163,7 +163,7 @@ public class ProjectNextTests {
 				ProjectFlag.COUNTS.flag
 		};
 
-		Path actual = ProjectFlag.INDEX.path;
+		Path actual = ProjectFlag.COUNTS.path;
 		Path expected = ProjectPath.EXPECTED.resolve("crawl").resolve("simple").resolve("simple-15-counts.json");
 
 		try {
