@@ -154,7 +154,29 @@ public class ProjectNextTests {
 	@Tag("next-v3.x")
 	@Tag("next-v4.0")
 	public void testHtmlSite() throws Exception {
-		// TODO
+		URL base = new URL(CrawlPageTests.GITHUB);
+		URL url = new URL(base, "input/simple/");
+
+		String[] args = {
+				ProjectFlag.HTML.flag, url.toString(),
+				ProjectFlag.MAX.flag, Integer.toString(15),
+				ProjectFlag.COUNTS.flag
+		};
+
+		Path actual = ProjectFlag.INDEX.path;
+		Path expected = ProjectPath.EXPECTED.resolve("crawl").resolve("simple").resolve("simple-15-counts.json");
+
+		try {
+			// should fail and throw an error
+			ProjectTests.checkAllOutput(args, Map.of(actual, expected));
+		}
+		catch (AssertionFailedError | MultipleFailuresError e) {
+			Assertions.assertNotNull(e);
+			return;
+		}
+
+		// should return before here
+		fail(debug);
 	}
 
 	/**
@@ -166,6 +188,7 @@ public class ProjectNextTests {
 	@Tag("next-v4.1")
 	@Tag("next-v4.x")
 	@Tag("next-v5.0")
+	@Tag("test-v5.0")
 	public void pass() throws Exception {
 		// No next tests for these releases!
 	}
